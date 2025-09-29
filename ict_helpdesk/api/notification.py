@@ -1,24 +1,24 @@
 import frappe
 from .sms import send_custom_sms as sms
-from .get_director import get_directors
+from .get_director import get_director
 
 
-# loop through directors
-directors = get_directors()
-for director in directors:
-    if director:
-        director_email = director.get("email")
-        director_mobile = director.get("mobile_no")
+# Director information
+director = get_director()
+director_email = director.get("email")
+director_mobile = director.get("mobile_no")
 
 # send_custom_sms takes two parameters: number (string) and message(string)
 @frappe.whitelist(allow_guest=False)
 def send_notification(doc, method):
+    # requester info
     requester_name = frappe.doc.full_name
     requester_email = frappe.doc.email
     requester_phone_number = frappe.doc.mobile_no
     requester_department = frappe.doc.department
     requester_location = frappe.doc.location
 
+    # assigned officer info
     assigned_to = frappe.doc.assigned_officer
     assigned_to_email = frappe.doc.assigned_offier_email
     assigned_to_mobile = frappe.doc.assigned_officer_mobile

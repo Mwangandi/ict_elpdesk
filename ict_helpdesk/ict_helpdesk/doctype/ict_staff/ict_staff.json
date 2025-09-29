@@ -12,7 +12,8 @@
   "last_name",
   "full_name",
   "mobile_no",
-  "email"
+  "email",
+  "designation"
  ],
  "fields": [
   {
@@ -52,13 +53,18 @@
   {
    "fieldname": "mobile_no",
    "fieldtype": "Data",
-   "label": "Phone Number"
+   "label": "Mobile Number"
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Data",
+   "label": "Designation"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-09-29 10:14:33.922913",
+ "modified": "2025-09-29 12:17:54.998658",
  "modified_by": "Administrator",
  "module": "Ict Helpdesk",
  "name": "ICT Staff",

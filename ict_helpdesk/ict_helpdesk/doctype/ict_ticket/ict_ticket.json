@@ -13,11 +13,12 @@
   "full_name",
   "mobile_no",
   "email",
+  "status",
+  "column_break_ggtj",
   "department",
   "directorate",
   "location",
   "designation",
-  "status",
   "section_break_kvwa",
   "issue_summary",
   "image_attachment",
@@ -294,7 +295,7 @@
   {
    "fieldname": "senior_ict_staff_tab",
    "fieldtype": "Tab Break",
-   "label": "CHIEF ICT STAFF"
+   "label": "SENIOR ICT STAFF"
   },
   {
    "fieldname": "senior_ict_officer",
@@ -310,9 +311,8 @@
   },
   {
    "fieldname": "assigned_officer",
-   "fieldtype": "Link",
+   "fieldtype": "Select",
    "label": "Assigned Officer ",
-   "options": "ICT Staff",
    "permlevel": 1
   },
   {
@@ -384,7 +384,7 @@
   {
    "fieldname": "chief_ict_staff_tab",
    "fieldtype": "Tab Break",
-   "label": "CHIEF ICT STAFF"
+   "label": "SENIOR ICT STAFF"
   },
   {
    "fieldname": "to_be_filled_out_by_a_senior_ict_officer_section",
@@ -405,17 +405,6 @@
    "hidden": 1,
    "label": "Directorate",
    "no_copy": 1,
-   "print_hide": 1,
-   "read_only": 1,
-   "search_index": 1
-  },
-  {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "ICT Ticket",
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
@@ -455,6 +444,7 @@
    "options": "Slow WIFI\nWIFI not working\nCannot connect to WIFI\nNo internet connection"
   },
   {
+   "depends_on": "eval:doc.internet_issue_check",
    "fieldname": "network_issue_description",
    "fieldtype": "Text",
    "label": "Issue Description",
@@ -473,13 +463,27 @@
    "fieldtype": "Select",
    "label": "Type of Issue",
    "mandatory_depends_on": "eval:doc.software_issue_check == 1"
+  },
+  {
+   "fieldname": "column_break_ggtj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "ICT Ticket",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-09-29 11:31:28.225097",
+ "modified": "2025-09-29 12:39:18.504823",
  "modified_by": "Administrator",
  "module": "Ict Helpdesk",
  "name": "ICT Ticket",

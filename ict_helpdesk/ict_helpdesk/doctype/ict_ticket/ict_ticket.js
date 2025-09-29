@@ -187,6 +187,16 @@ frappe.ui.form.on("ICT Ticket", {
             frm.refresh_field("clearance_issue_description");
         }
     },
+    assigned_officer: function(frm){
+        if(!assigned_officer){return}
+        frappe.call({
+            method: "ict_helpdesk.api.assigned_officer.get_assigned_officer",
+            callback: function(r){
+                frm.set_df_property("assigned_officer", "options", r.message.full_name);
+                frm.refresh_field("assigned_officer");
+            }
+            })
+    },
     workflow_state: function(frm) {
         const approval_fields = [
             "personal_number", "issue_summary", "image_attachment", "recurring_issue_check", "software_issue_check",
@@ -210,6 +220,21 @@ frappe.ui.form.on("ICT Ticket", {
                 frm.set_df_property(fieldname, "read_only", 1);
             });
             frm.refresh_fields(approval_fields);
+
+            frappe.call({
+                method: "ict_helpdesk.api.assigned_officer.get_ict_officers",
+                callback: function(r) {
+                    if (r.message) {
+                        let options = [""];
+                        r.message.forEach(officer => {
+                            options.push(officer.full_name);
+                        });
+
+                        frm.set_df_property("assigned_officer", "options", options);
+                        frm.refresh_field("assigned_officer");
+                    }
+                }
+            });
 
         }
         else if(["In Progress", "On Hold", "Delegated"].includes(frm.doc.workflow_state)){
@@ -241,9 +266,26 @@ frappe.ui.form.on("ICT Ticket", {
             frm.refresh_fields();
         }
     },
+    // AUTO POPULATE ASSIGNED OFFICER EMAIL & MOBILE NO
+     assigned_officer: function(frm) {
+        if (!frm.doc.assigned_officer) return;
+
+        frappe.call({
+            method: "ict_helpdesk.api.assigned_officer.get_officer_details",
+            args: {
+                officer_name: frm.doc.assigned_officer
+            },
+            callback: function(r) {
+                if (r.message) {
+                    frm.set_value("assigned_officer_email", r.message.email);
+                    frm.set_value("assigned_officer_phone", r.message.mobile_no);
+                    // TODO:  See if refresh is needed
+                }
+            }
+        });
+    },
     before_workflow_action: function (frm) {
         if (frm.selected_workflow_action && frm.selected_workflow_action.to_state === "Awaiting Approval") {
-            // Validation before sending for approval
             if(!frm.doc.personal_number){
                 frappe.throw(__("Please enter your Personal Number before sending for approval"));
             }
@@ -254,20 +296,16 @@ frappe.ui.form.on("ICT Ticket", {
             }
         }
         else if (frm.selected_workflow_action && frm.selected_workflow_action.to_state === "Resolved") {
-            // validation before resolving
             if(frm.doc.resolve_ticket_check == 0){
                 frappe.throw(__("Please confirm the issue is resolved by checking the Resolve Issue Check box"));
             }
         }
         else if (frm.selected_workflow_action && frm.selected_workflow_action.to_state === "Awaiting Review") {
-            // validation before approving
-            // TODO: Confirm report field name and attach_report field name
             if((!frm.doc.report || frm.doc.report_attachment) && frm.doc.resolve_ticket_check == 0){
                 frappe.throw(__("Please write or attach a report before sending for review"));
             }
         }
         else if(frm.selected_workflow_action && frm.selected_workflow_action.to_state === "Completed"){
-            // validation before completing
             if(frm.doc.completed_check == 0){
                 frappe.throw(__("Please confirm the ticket is completed by checking the Completed Check box"));
             }
