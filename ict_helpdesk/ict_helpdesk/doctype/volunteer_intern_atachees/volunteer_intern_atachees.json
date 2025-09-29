@@ -1,0 +1,62 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-09-25 14:18:45.009561",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "intern_name",
+  "intern_email",
+  "intern_phone_number",
+  "intern_department",
+  "intern_directorate",
+  "office"
+ ],
+ "fields": [
+  {
+   "fieldname": "intern_name",
+   "fieldtype": "Data",
+   "label": "Intern Name"
+  },
+  {
+   "fieldname": "intern_email",
+   "fieldtype": "Data",
+   "label": "Intern Email"
+  },
+  {
+   "fieldname": "intern_phone_number",
+   "fieldtype": "Data",
+   "label": "Intern Phone Number"
+  },
+  {
+   "fieldname": "intern_department",
+   "fieldtype": "Data",
+   "label": "Department"
+  },
+  {
+   "fieldname": "intern_directorate",
+   "fieldtype": "Data",
+   "label": "Intern Directorate"
+  },
+  {
+   "fieldname": "office",
+   "fieldtype": "Data",
+   "label": "Office"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-09-26 08:38:04.487033",
+ "modified_by": "Administrator",
+ "module": "Ict Helpdesk",
+ "name": "Volunteer Intern Atachees",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

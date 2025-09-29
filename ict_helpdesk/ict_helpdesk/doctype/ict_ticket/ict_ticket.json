@@ -1,0 +1,674 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2025-09-25 14:18:00.392063",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "requester_tab",
+  "section_break_wry3",
+  "naming_series",
+  "personal_number",
+  "full_name",
+  "mobile_no",
+  "email",
+  "department",
+  "directorate",
+  "location",
+  "designation",
+  "status",
+  "section_break_kvwa",
+  "issue_summary",
+  "image_attachment",
+  "recurring_issue_check",
+  "software_issue",
+  "software_issue_check",
+  "type_of_issue",
+  "software_issue_description",
+  "hardware_issue",
+  "hardware_issue_check",
+  "county_device_check",
+  "tag_number",
+  "serial_number",
+  "device_name",
+  "device_model",
+  "device_ram",
+  "device_storage",
+  "device_department",
+  "device_directorate",
+  "device_office",
+  "officer_in_charge",
+  "device_status",
+  "column_break_lklj",
+  "hardware_issue_description",
+  "network_issue_section",
+  "internet_issue_check",
+  "internet_issue_type",
+  "network_issue_description",
+  "clearance_issue_section",
+  "clearance_issue_check",
+  "clearrance_issue_description",
+  "senior_ict_staff_tab",
+  "senior_ict_officer",
+  "issue_priority",
+  "assigned_officer",
+  "assigned_officer_email",
+  "assigned_officer_phone",
+  "issue_delegation_check",
+  "ict_staff_tab",
+  "to_be_filled_out_by_assigned_officer_section",
+  "delegate_to",
+  "report_attachment",
+  "report",
+  "resolve_issue_check",
+  "chief_ict_staff_tab",
+  "to_be_filled_out_by_a_senior_ict_officer_section",
+  "ticket_complete",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "requester_tab",
+   "fieldtype": "Tab Break",
+   "label": "REQUESTER"
+  },
+  {
+   "fieldname": "section_break_wry3",
+   "fieldtype": "Section Break",
+   "label": "REQUESTER INFORMATION (TO BE FILLED BY THE DEPARTMENT IN CHARGE)"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Ticket ID",
+   "options": "TKT-.YY.-.MM.-.DD.-.####",
+   "read_only": 1
+  },
+  {
+   "fieldname": "personal_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Personal Number",
+   "length": 20,
+   "reqd": 1
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Full Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Email",
+   "read_only": 1
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Department",
+   "read_only": 1
+  },
+  {
+   "fieldname": "location",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Location",
+   "read_only": 1
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Designation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Status",
+   "options": "Open\nAwaiting Approval\nIn Progress\nDelegated\nOn Hold\nResolved\nAwaiting Review\nCompleted",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_kvwa",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "issue_summary",
+   "fieldtype": "Small Text",
+   "label": "Issue Summary"
+  },
+  {
+   "fieldname": "image_attachment",
+   "fieldtype": "Attach Image",
+   "label": "Attach an Image if necessary"
+  },
+  {
+   "default": "0",
+   "fieldname": "recurring_issue_check",
+   "fieldtype": "Check",
+   "label": "Is it a recurring issue"
+  },
+  {
+   "fieldname": "software_issue",
+   "fieldtype": "Section Break",
+   "label": "SOFTWARE ISSUE"
+  },
+  {
+   "default": "0",
+   "fieldname": "software_issue_check",
+   "fieldtype": "Check",
+   "label": "Software Issue"
+  },
+  {
+   "depends_on": "eval:doc.software_issue_check",
+   "fieldname": "type_of_issue",
+   "fieldtype": "Select",
+   "label": "Type of Issue"
+  },
+  {
+   "depends_on": "eval:doc.software_issue_check",
+   "fieldname": "software_issue_description",
+   "fieldtype": "Small Text",
+   "label": "Software Issue Description"
+  },
+  {
+   "fieldname": "hardware_issue",
+   "fieldtype": "Section Break",
+   "label": "HARDWARE ISSUE"
+  },
+  {
+   "default": "0",
+   "fieldname": "hardware_issue_check",
+   "fieldtype": "Check",
+   "label": "Hardware Issue"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.hardware_issue_check",
+   "fieldname": "county_device_check",
+   "fieldtype": "Check",
+   "label": "County Device"
+  },
+  {
+   "depends_on": "eval:doc.county_device_check",
+   "fieldname": "tag_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Tag Number",
+   "mandatory_depends_on": "eval:doc.county_device_check"
+  },
+  {
+   "depends_on": "eval:doc.county_device_check",
+   "fieldname": "serial_number",
+   "fieldtype": "Data",
+   "label": "Serial Number"
+  },
+  {
+   "fieldname": "device_model",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Device Model",
+   "mandatory_depends_on": "eval:doc.serial_number",
+   "read_only": 1,
+   "read_only_depends_on": "eval:doc.serial_number"
+  },
+  {
+   "fieldname": "device_ram",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "RAM",
+   "read_only": 1
+  },
+  {
+   "fieldname": "device_storage",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Storage",
+   "read_only": 1
+  },
+  {
+   "fieldname": "device_department",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Department",
+   "read_only": 1
+  },
+  {
+   "fieldname": "device_directorate",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Directorate",
+   "read_only": 1
+  },
+  {
+   "fieldname": "device_office",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Office",
+   "read_only": 1
+  },
+  {
+   "fieldname": "officer_in_charge",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Officer In charge",
+   "mandatory_depends_on": "eval:doc.county_device_check",
+   "read_only": 1,
+   "read_only_depends_on": "eval:doc.county_device_check"
+  },
+  {
+   "fieldname": "device_status",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Status",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_lklj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.hardware_issue_check",
+   "fieldname": "hardware_issue_description",
+   "fieldtype": "Text",
+   "label": "Issue Description",
+   "mandatory_depends_on": "eval:doc.hardware_issue_check"
+  },
+  {
+   "fieldname": "clearance_issue_section",
+   "fieldtype": "Section Break",
+   "label": "CLEARANCE ISSUE"
+  },
+  {
+   "default": "0",
+   "fieldname": "clearance_issue_check",
+   "fieldtype": "Check",
+   "label": "Clearance Issue"
+  },
+  {
+   "fieldname": "senior_ict_staff_tab",
+   "fieldtype": "Tab Break",
+   "label": "CHIEF ICT STAFF"
+  },
+  {
+   "fieldname": "senior_ict_officer",
+   "fieldtype": "Section Break",
+   "label": "TO BE FILLED OUT BY A SENIOR ICT OFFICER"
+  },
+  {
+   "fieldname": "issue_priority",
+   "fieldtype": "Select",
+   "label": "Priority",
+   "options": "Critical\nHigh\nMedium\nLow",
+   "permlevel": 1
+  },
+  {
+   "fieldname": "assigned_officer",
+   "fieldtype": "Link",
+   "label": "Assigned Officer ",
+   "options": "ICT Staff",
+   "permlevel": 1
+  },
+  {
+   "fetch_from": "assigned_officer.email",
+   "fieldname": "assigned_officer_email",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Assigned Officer Email",
+   "mandatory_depends_on": "eval:doc.assigned_officer",
+   "permlevel": 1,
+   "read_only": 1,
+   "read_only_depends_on": "eval:doc.assigned_officer"
+  },
+  {
+   "fetch_from": "assigned_officer.phone_number",
+   "fieldname": "assigned_officer_phone",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Assigned Officer Phone Number",
+   "mandatory_depends_on": "eval:doc.assigned_officer",
+   "permlevel": 1,
+   "read_only": 1,
+   "read_only_depends_on": "eval:doc.assigned_officer"
+  },
+  {
+   "default": "0",
+   "fieldname": "issue_delegation_check",
+   "fieldtype": "Check",
+   "label": "Allow Issue Delegation",
+   "permlevel": 1
+  },
+  {
+   "fieldname": "ict_staff_tab",
+   "fieldtype": "Tab Break",
+   "label": "ICT STAFF"
+  },
+  {
+   "fieldname": "to_be_filled_out_by_assigned_officer_section",
+   "fieldtype": "Section Break",
+   "label": "TO BE FILLED OUT BY ASSIGNED OFFICER"
+  },
+  {
+   "depends_on": "eval:doc.issue_delegation_check",
+   "fieldname": "delegate_to",
+   "fieldtype": "Table",
+   "label": "Delegate To",
+   "options": "Volunteer Intern Atachees",
+   "permlevel": 1
+  },
+  {
+   "fieldname": "report_attachment",
+   "fieldtype": "Attach",
+   "label": "Optional Report Attachment",
+   "permlevel": 1
+  },
+  {
+   "fieldname": "report",
+   "fieldtype": "Text Editor",
+   "label": "REPORT",
+   "permlevel": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "resolve_issue_check",
+   "fieldtype": "Check",
+   "label": "Resolve Issue",
+   "permlevel": 1
+  },
+  {
+   "fieldname": "chief_ict_staff_tab",
+   "fieldtype": "Tab Break",
+   "label": "CHIEF ICT STAFF"
+  },
+  {
+   "fieldname": "to_be_filled_out_by_a_senior_ict_officer_section",
+   "fieldtype": "Section Break",
+   "label": "TO BE FILLED OUT BY A SENIOR ICT OFFICER"
+  },
+  {
+   "default": "0",
+   "fieldname": "ticket_complete",
+   "fieldtype": "Check",
+   "label": "Mark ticket as completed",
+   "permlevel": 2
+  },
+  {
+   "depends_on": "eval:doc.personal_number",
+   "fieldname": "directorate",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Directorate",
+   "no_copy": 1,
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "ICT Ticket",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "mobile_no",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Mobile Number",
+   "length": 13,
+   "read_only": 1
+  },
+  {
+   "fieldname": "device_name",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Device Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "network_issue_section",
+   "fieldtype": "Section Break",
+   "label": "INTERNET/NETWORK ISSUE"
+  },
+  {
+   "default": "0",
+   "fieldname": "internet_issue_check",
+   "fieldtype": "Check",
+   "label": "Internet issue"
+  },
+  {
+   "depends_on": "eval:doc.internet_issue_check",
+   "fieldname": "internet_issue_type",
+   "fieldtype": "Select",
+   "label": "type of Issue",
+   "mandatory_depends_on": "eval:doc.internet_issue_check",
+   "options": "WIFI not working"
+  },
+  {
+   "fieldname": "network_issue_description",
+   "fieldtype": "Text",
+   "label": "Issue Description"
+  },
+  {
+   "depends_on": "eval:doc.clearance_issue_check",
+   "fieldname": "clearrance_issue_description",
+   "fieldtype": "Text",
+   "label": "Clearance Issue",
+   "mandatory_depends_on": "eval:doc.clearance_issue_check"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-09-29 08:19:36.294651",
+ "modified_by": "Administrator",
+ "module": "Ict Helpdesk",
+ "name": "ICT Ticket",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "ICT Director",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Senior ICT Officer",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Chief ICT Officer",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "ICT Officer (I, II, III)",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Voluntter/Intern/Atachee",
+   "share": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Requester",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "ICT Director",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Chief ICT Officer",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Senior ICT Officer",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "ICT Officer (I, II, III)",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Voluntter/Intern/Atachee",
+   "share": 1
+  },
+  {
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "permlevel": 2,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "ICT Director",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 2,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Chief ICT Officer",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 2,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Senior ICT Officer",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "permlevel": 2,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "ICT Officer (I, II, III)",
+   "select": 1,
+   "share": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

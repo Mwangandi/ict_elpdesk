@@ -246,4 +246,11 @@ website_route_rules = [
     {"from_route": "/signup", "to_route": "/register"}
 ]
 
+# app_include_css = "/public/css/edit_login.css"
+# website_include_css = ["/assets/ict_helpdesk/css/edit_login.css"]
+
+website_include_js = ["/assets/ict_helpdesk/js/edit_login.js"]
+
+
+
 

@@ -1,0 +1,117 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:tag_number",
+ "creation": "2025-09-26 12:09:30.014246",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "tag_number",
+  "serial_number",
+  "device_name",
+  "device_model",
+  "device_ram",
+  "device_storage",
+  "device_department",
+  "device_directorate",
+  "device_office",
+  "officer_in_charge",
+  "status"
+ ],
+ "fields": [
+  {
+   "fieldname": "tag_number",
+   "fieldtype": "Data",
+   "label": "Tag Number",
+   "length": 20,
+   "unique": 1
+  },
+  {
+   "fieldname": "serial_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Serial Number",
+   "length": 20
+  },
+  {
+   "fieldname": "device_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Device Name"
+  },
+  {
+   "fieldname": "device_model",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Device Model"
+  },
+  {
+   "fieldname": "officer_in_charge",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Officer In Charge"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Data",
+   "label": "Status"
+  },
+  {
+   "fieldname": "device_department",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Department"
+  },
+  {
+   "fieldname": "device_directorate",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Directorate"
+  },
+  {
+   "fieldname": "device_office",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Office"
+  },
+  {
+   "fieldname": "device_ram",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Ram"
+  },
+  {
+   "fieldname": "device_storage",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Storage"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-09-26 14:46:35.843823",
+ "modified_by": "Administrator",
+ "module": "Ict Helpdesk",
+ "name": "Asset Data",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

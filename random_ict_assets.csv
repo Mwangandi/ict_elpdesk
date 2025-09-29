@@ -1,0 +1,61 @@
+tag_number,serial_number,device_name,device_model,device_ram,device_storage,device_department,device_directorate,device_office,officer_in_charge,status
+TOG-1001,SN-679923,Tablet,Samsung Galaxy,8GB,1TB HDD,Finance,Administration,HQ,Alice Brown,In Repair
+TOG-1002,SN-726912,Router,Lenovo ThinkPad,32GB,1TB HDD,HR,Planning,Branch B,Chris Green,In Stock
+TOG-1003,SN-544346,Phone,Dell PowerEdge,4GB,512GB SSD,Finance,Technical,Branch B,Nancy White,Decommissioned
+TOG-1004,SN-614954,Phone,Dell Latitude,16GB,512GB SSD,Procurement,Planning,HQ,Sarah Connor,In Repair
+TOG-1005,SN-633775,Server,Dell PowerEdge,16GB,256GB SSD,HR,Corporate Services,HQ,David Lee,Active
+TOG-1006,SN-588022,Desktop,Lenovo ThinkPad,4GB,1TB HDD,HR,Corporate Services,Branch A,Chris Green,In Stock
+TOG-1007,SN-452763,Phone,Mikrotik RB750,32GB,2TB HDD,Finance,Technical,Branch A,Michael Johnson,In Stock
+TOG-1008,SN-260123,Server,Samsung Galaxy,4GB,1TB HDD,Operations,Corporate Services,Branch A,Jane Smith,Active
+TOG-1009,SN-613866,Laptop,Cisco 2900,16GB,1TB HDD,Procurement,Planning,Branch B,Sarah Connor,In Repair
+TOG-1010,SN-880512,Switch,HP ProBook,4GB,256GB SSD,Logistics,Planning,Branch B,David Lee,Active
+TOG-1011,SN-837889,Server,Lenovo ThinkPad,8GB,2TB HDD,Logistics,Technical,Branch A,Nancy White,In Stock
+TOG-1012,SN-475267,Router,Dell Latitude,8GB,512GB SSD,Procurement,Planning,Field Office,John Doe,Decommissioned
+TOG-1013,SN-728480,Desktop,iPad Air,4GB,512GB SSD,HR,Planning,HQ,Alice Brown,Decommissioned
+TOG-1014,SN-661152,Tablet,iPad Air,8GB,1TB HDD,Finance,Corporate Services,Branch A,Michael Johnson,In Stock
+TOG-1015,SN-292453,Desktop,Samsung Galaxy,4GB,512GB SSD,Procurement,Administration,Branch A,Chris Green,Decommissioned
+TOG-1016,SN-434769,Desktop,Lenovo ThinkPad,16GB,512GB SSD,HR,Technical,Branch B,Sarah Connor,In Repair
+TOG-1017,SN-701865,Tablet,iPad Air,4GB,256GB SSD,ICT,Planning,Branch A,David Lee,Decommissioned
+TOG-1018,SN-228319,Tablet,Cisco 2900,16GB,256GB SSD,HR,Technical,Field Office,Chris Green,In Stock
+TOG-1019,SN-229484,Router,Mikrotik RB750,32GB,512GB SSD,ICT,Administration,Field Office,David Lee,Active
+TOG-1020,SN-906133,Printer,iPad Air,4GB,512GB SSD,ICT,Planning,Field Office,Nancy White,Decommissioned
+TOG-1021,SN-216890,Laptop,HP ProBook,16GB,512GB SSD,Finance,Technical,HQ,Alice Brown,In Repair
+TOG-1022,SN-611475,Laptop,iPad Air,8GB,1TB HDD,Logistics,Technical,Branch B,David Lee,In Stock
+TOG-1023,SN-147739,Laptop,HP ProBook,16GB,512GB SSD,Operations,Corporate Services,Branch A,Alice Brown,In Stock
+TOG-1024,SN-650568,Tablet,Cisco 2900,32GB,2TB HDD,Finance,Planning,HQ,Alice Brown,In Repair
+TOG-1025,SN-269693,Desktop,iPad Air,16GB,1TB HDD,Logistics,Administration,HQ,John Doe,In Repair
+TOG-1026,SN-377243,Server,HP ProBook,4GB,512GB SSD,Logistics,Technical,HQ,Alice Brown,Active
+TOG-1027,SN-721907,Laptop,iPad Air,32GB,512GB SSD,Procurement,Administration,HQ,David Lee,Active
+TOG-1028,SN-223675,Phone,Mikrotik RB750,8GB,512GB SSD,Finance,Administration,HQ,Michael Johnson,In Repair
+TOG-1029,SN-237187,Laptop,Mikrotik RB750,8GB,512GB SSD,HR,Corporate Services,Field Office,Michael Johnson,In Repair
+TOG-1030,SN-702447,Printer,Samsung Galaxy,4GB,256GB SSD,Logistics,Planning,Branch B,John Doe,In Repair
+TOG-1031,SN-446666,Printer,Cisco 2900,8GB,256GB SSD,Logistics,Corporate Services,HQ,Sarah Connor,In Repair
+TOG-1032,SN-181105,Router,iPad Air,4GB,256GB SSD,Procurement,Administration,Branch A,Nancy White,In Stock
+TOG-1033,SN-694887,Switch,HP ProBook,4GB,1TB HDD,Finance,Technical,Branch B,John Doe,Active
+TOG-1034,SN-868598,Phone,HP ProBook,8GB,1TB HDD,Logistics,Planning,Field Office,Chris Green,Decommissioned
+TOG-1035,SN-616915,Router,Mikrotik RB750,8GB,2TB HDD,Procurement,Technical,HQ,Nancy White,In Repair
+TOG-1036,SN-561288,Phone,iPad Air,4GB,2TB HDD,HR,Technical,HQ,Sarah Connor,Decommissioned
+TOG-1037,SN-611887,Desktop,iPad Air,16GB,256GB SSD,HR,Planning,Branch B,Michael Johnson,Active
+TOG-1038,SN-935525,Phone,Dell Latitude,8GB,512GB SSD,Operations,Planning,HQ,Michael Johnson,In Stock
+TOG-1039,SN-322679,Laptop,Dell PowerEdge,16GB,1TB HDD,Finance,Technical,Branch B,David Lee,In Repair
+TOG-1040,SN-890797,Switch,Lenovo ThinkPad,32GB,1TB HDD,Procurement,Planning,HQ,Sarah Connor,In Repair
+TOG-1041,SN-541998,Switch,Cisco 2900,8GB,512GB SSD,HR,Administration,Branch A,Jane Smith,Active
+TOG-1042,SN-189924,Switch,HP ProBook,32GB,1TB HDD,Finance,Technical,HQ,Jane Smith,Decommissioned
+TOG-1043,SN-190956,Desktop,iPad Air,32GB,2TB HDD,Procurement,Administration,Branch A,Nancy White,Active
+TOG-1044,SN-471033,Switch,HP ProBook,16GB,2TB HDD,Operations,Administration,Branch A,John Doe,In Repair
+TOG-1045,SN-801407,Phone,Mikrotik RB750,16GB,1TB HDD,HR,Technical,HQ,Jane Smith,Decommissioned
+TOG-1046,SN-764751,Tablet,Mikrotik RB750,32GB,2TB HDD,HR,Administration,Branch B,Jane Smith,In Stock
+TOG-1047,SN-628776,Tablet,Cisco 2900,32GB,256GB SSD,Operations,Corporate Services,Branch A,Chris Green,In Repair
+TOG-1048,SN-623308,Server,Dell PowerEdge,4GB,1TB HDD,Finance,Technical,Field Office,Michael Johnson,Decommissioned
+TOG-1049,SN-140150,Tablet,Dell Latitude,8GB,256GB SSD,HR,Administration,HQ,Alice Brown,In Stock
+TOG-1050,SN-305628,Server,iPad Air,4GB,512GB SSD,Logistics,Technical,Field Office,John Doe,Active
+TOG-1051,SN-759651,Printer,Mikrotik RB750,16GB,1TB HDD,Procurement,Administration,Branch B,John Doe,In Stock
+TOG-1052,SN-879836,Switch,Mikrotik RB750,8GB,256GB SSD,Logistics,Corporate Services,Field Office,Michael Johnson,Decommissioned
+TOG-1053,SN-343886,Tablet,Cisco 2900,32GB,512GB SSD,Procurement,Planning,HQ,John Doe,In Repair
+TOG-1054,SN-686415,Tablet,iPad Air,4GB,256GB SSD,Logistics,Planning,Field Office,Sarah Connor,In Repair
+TOG-1055,SN-648881,Server,iPad Air,8GB,1TB HDD,HR,Administration,HQ,David Lee,In Repair
+TOG-1056,SN-501950,Tablet,Dell Latitude,4GB,2TB HDD,Finance,Planning,HQ,David Lee,In Repair
+TOG-1057,SN-176980,Tablet,Cisco 2900,4GB,512GB SSD,HR,Planning,Field Office,Chris Green,Active
+TOG-1058,SN-819789,Switch,HP ProBook,8GB,2TB HDD,Operations,Planning,Field Office,Nancy White,In Stock
+TOG-1059,SN-264970,Printer,HP ProBook,8GB,2TB HDD,Procurement,Corporate Services,Field Office,Jane Smith,Active
+TOG-1060,SN-399503,Phone,HP ProBook,8GB,512GB SSD,Finance,Technical,HQ,Jane Smith,In Stock

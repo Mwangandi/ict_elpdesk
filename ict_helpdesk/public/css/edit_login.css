@@ -1,0 +1,4 @@
+/* Hide the 'Login with Email Link' block */
+.login-with-email-link {
+    display: none !important;
+}

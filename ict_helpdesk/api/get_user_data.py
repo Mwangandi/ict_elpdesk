@@ -1,5 +1,6 @@
 import frappe
 
+# getting user info for new user creation
 @frappe.whitelist(allow_guest=True)
 def get_user_details(personal_number):
     employee = frappe.db.get_value(
@@ -10,4 +11,17 @@ def get_user_details(personal_number):
     )
     if employee:
         return employee
+    return None
+
+# getting ICT ticket requester info
+@frappe.whitelist(allow_guest=False)
+def ticket_personal_num(personal_number):
+    requester_dets = frappe.db.get_value(
+        "User",
+        {"personal_number": personal_number},
+        ["first_name","middle_name", "last_name", "mobile_no", "email", "department", "directorate", "location"],
+        as_dict=True
+    )
+    if requester_dets:
+        return requester_dets
     return None
