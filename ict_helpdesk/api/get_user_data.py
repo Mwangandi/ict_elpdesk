@@ -13,6 +13,7 @@ def get_user_details(personal_number):
         return employee
     return None
 
+
 # getting ICT ticket requester info
 @frappe.whitelist(allow_guest=False)
 def ticket_personal_num(personal_number):
@@ -25,6 +26,7 @@ def ticket_personal_num(personal_number):
     if requester_dets:
         return requester_dets
     return None
+
 
 # getting ICT Staff  DOCTYPE INFO
 @frappe.whitelist(allow_guest=False)

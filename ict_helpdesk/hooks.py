@@ -251,6 +251,12 @@ website_route_rules = [
 
 website_include_js = ["/assets/ict_helpdesk/js/edit_login.js"]
 
+doc_events = {
+    "ICT Ticket": {
+        "on_update": "ict_helpdesk.api.notifications.send_notification"
+    }
+}
+
 
 
 
