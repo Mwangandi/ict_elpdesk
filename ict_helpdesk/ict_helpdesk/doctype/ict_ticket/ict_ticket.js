@@ -125,19 +125,19 @@ frappe.ui.form.on("ICT Ticket", {
         // Check department and directorate
         if(frm.doc.department == "Finance and Economic PLanning"){
             finance_issues.forEach(function (fieldname){
-                frm.set_df_property("issue_type", "options", finance_issues.join("\n"));
+                frm.set_df_property("software_issue_type", "options", finance_issues.join("\n"));
                 frm.refresh_field(fieldname);
             })
         }
         if(frm.doc.department == "Health Services"){
             health_issues.forEach(function (fieldname){
-                frm.set_df_property("issue_type", "options", health_issues.join("\n"));
+                frm.set_df_property("software_issue_type", "options", health_issues.join("\n"));
                 frm.refresh_field(fieldname);
             });
         }
         if(frm.doc.department == "Devolution"){
             health_issues.forEach(function (fieldname){
-                frm.set_df_property("issue_type", "options", hr_issues.join("\n"));
+                frm.set_df_property("software_issue_type", "options", hr_issues.join("\n"));
                 frm.refresh_field(fieldname);
             });
         }
@@ -145,11 +145,9 @@ frappe.ui.form.on("ICT Ticket", {
      // CLEAR FIELDS IF CHECK UNCHECKED: IF FAILS FALL TO RELOAD THE WHOLE PAGE
     hardware_issue_check: function(frm){
         if(frm.doc.hardware_issue_check == 0){
-            // Clear all the fields in the hardware section
-            // TODO: Confirm the fields in the array
             const hardware_section = [
-                "hardware_issue_description", "county_laptop_check", "device_ram", "device_storage", "device_department",
-                "device_directorate", "office", "status"
+                "county_device_check", "tag_nuber", "serial_number", "device_name", "device_model", "device_ram","device_storage",
+                "device_department", "device_directorate", "device_office", "officer_in_charge", "device_status"
             ]
             hardware_section.forEach(function(fieldname){
                 frm,set_value(fieldname, null);
@@ -161,8 +159,8 @@ frappe.ui.form.on("ICT Ticket", {
     county_device_check: function(frm){
         if(frm.doc.county_device_check == 0){
             const device_section = [
-                "device_ram", "device_storage", "device_department",
-                "device_directorate", "office", "status"
+                "tag_nuber", "serial_number", "device_name", "device_model", "device_ram","device_storage",
+                "device_department", "device_directorate", "device_office", "officer_in_charge", "device_status"
             ]
             device_section.forEach(function(fieldname){
                 frm.set_value(fieldname, "");
@@ -187,6 +185,92 @@ frappe.ui.form.on("ICT Ticket", {
         if(clearance_issue_check == 0){
             frm.set_value("clearance_issue_description", "");
             frm.refresh_field("clearance_issue_description");
+        }
+    },
+    workflow_state: function(frm) {
+        const approval_fields = [
+            "personal_number", "issue_summary", "image_attachment", "recurring_issue_check", "software_issue_check",
+            "type_of_issue", "software_issue_description", "hardware_issue_check", "hardware_issue_description", 
+            "county-device_check", "tag_number","serial_number", "internet_issue_check", "internet_issue_type", 
+            "internet_issue_description", "clearance_issue_check", "clearance_issue_description"
+        ];
+
+        const progress_fields = [
+            ...approval_fields,
+            "issue_priority", "assigned_officer", "assigned_officer_email", "assigned_officer_phone"
+        ];
+
+        const resolved_fields = [
+            ...progress_fields,
+            "delegate_to", "report_attachment","report", "resolve_issue_check"
+        ];
+
+        if(frm.doc.workflow_state == "Awaiting Approval"){
+            approval_fields.forEach(fieldname => {
+                frm.set_df_property(fieldname, "read_only", 1);
+            });
+            frm.refresh_fields(approval_fields);
+
+        }
+        else if(["In Progress", "On Hold", "Delegated"].includes(frm.doc.workflow_state)){
+            progress_fields.forEach(fieldname => {
+                frm.set_df_property(fieldname, "read_only", 1);
+            });
+            frm.refresh_fields(progress_fields);
+
+        }
+        else if(frm.doc.workflow_state == "Resolved"){
+            resolved_fields.forEach(fieldname => {
+                frm.set_df_property(fieldname, "read_only", 1);
+            });
+            frm.refresh_fields(resolved_fields);
+
+        }
+        else if(frm.doc.workflow_state == "Awaiting Review"){
+            ["report_attachment", "report"].forEach(fieldname => {
+                frm.set_df_property(fieldname, "read_only", 0);
+            });
+            frm.refresh_fields(["report_attachment", "report"]);
+
+        }
+        else if(frm.doc.workflow_state == "Completed"){
+            // Lock ALL fields on the form
+            Object.keys(frm.fields_dict).forEach(fieldname => {
+                frm.set_df_property(fieldname, "read_only", 1);
+            });
+            frm.refresh_fields();
+        }
+    },
+    before_workflow_action: function (frm) {
+        if (frm.selected_workflow_action && frm.selected_workflow_action.to_state === "Awaiting Approval") {
+            // Validation before sending for approval
+            if(!frm.doc.personal_number){
+                frappe.throw(__("Please enter your Personal Number before sending for approval"));
+            }
+        }
+        else if (frm.selected_workflow_action && frm.selected_workflow_action.to_state === "In Progress") {
+            if (!frm.doc.priority || !frm.doc.assigned_to) {
+                frappe.throw(__("Please set both Priority and Assigned Officer before moving to In Progress"));
+            }
+        }
+        else if (frm.selected_workflow_action && frm.selected_workflow_action.to_state === "Resolved") {
+            // validation before resolving
+            if(frm.doc.resolve_ticket_check == 0){
+                frappe.throw(__("Please confirm the issue is resolved by checking the Resolve Issue Check box"));
+            }
+        }
+        else if (frm.selected_workflow_action && frm.selected_workflow_action.to_state === "Awaiting Review") {
+            // validation before approving
+            // TODO: Confirm report field name and attach_report field name
+            if((!frm.doc.report || frm.doc.report_attachment) && frm.doc.resolve_ticket_check == 0){
+                frappe.throw(__("Please write or attach a report before sending for review"));
+            }
+        }
+        else if(frm.selected_workflow_action && frm.selected_workflow_action.to_state === "Completed"){
+            // validation before completing
+            if(frm.doc.completed_check == 0){
+                frappe.throw(__("Please confirm the ticket is completed by checking the Completed Check box"));
+            }
         }
     },
 	refresh(frm) {

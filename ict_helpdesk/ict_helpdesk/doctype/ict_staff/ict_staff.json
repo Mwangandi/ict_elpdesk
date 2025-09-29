@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "field:full_name",
  "creation": "2025-09-25 22:39:36.711765",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -9,15 +10,18 @@
   "first_name",
   "middle_name",
   "last_name",
-  "phone_number",
+  "full_name",
+  "mobile_no",
   "email"
  ],
  "fields": [
   {
    "fieldname": "personal_number",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Personal Number",
-   "length": 20
+   "length": 20,
+   "reqd": 1
   },
   {
    "fieldname": "first_name",
@@ -35,23 +39,30 @@
    "label": "Last Name"
   },
   {
-   "fieldname": "phone_number",
-   "fieldtype": "Data",
-   "label": "Phone Number"
-  },
-  {
    "fieldname": "email",
    "fieldtype": "Data",
    "label": "Email"
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "label": "Full Name",
+   "unique": 1
+  },
+  {
+   "fieldname": "mobile_no",
+   "fieldtype": "Data",
+   "label": "Phone Number"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-09-26 08:37:55.961574",
+ "modified": "2025-09-29 10:14:33.922913",
  "modified_by": "Administrator",
  "module": "Ict Helpdesk",
  "name": "ICT Staff",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {

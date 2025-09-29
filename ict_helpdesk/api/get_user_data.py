@@ -25,3 +25,18 @@ def ticket_personal_num(personal_number):
     if requester_dets:
         return requester_dets
     return None
+
+# getting ICT Staff  DOCTYPE INFO
+@frappe.whitelist(allow_guest=False)
+def get_officer_dets(payroll_number):
+   officer = frappe.get_doc(
+      "User",
+      {"payroll_number": payroll_number},
+      {"first_name","middle_name", "last_name", "email", "mobile_no"}
+   ) 
+   if officer:
+      return officer
+   else:
+      return None
+
+
