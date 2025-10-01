@@ -5,8 +5,7 @@ def get_tag_number(tag_number):
     tag = frappe.db.get_value(
         "Asset Data",
         {"tag_number": tag_number},
-        ["serial_number", "device_name", "device_model", "device_ram", "device_storage", "device_department", "device_directorate", "device_office", "officer_in_charge", "status"],
-        as_dict=True
+        ["serial_number", "device_name", "device_model", "device_ram", "device_storage", "device_department", "device_directorate", "device_office", "officer_in_charge", "status"]
     )
     if tag:
         return tag
@@ -17,8 +16,7 @@ def get_serial_num(serial_number):
     serial = frappe.db.get_value(
         "Asset Data",
         {"serial_number": serial_number},
-        ["tag_number","device_name", "device_model", "device_ram", "device_storage", "device_department", "device_directorate", "device_office", "officer_in_charge", "status" ],
-        as_dict=True
+        ["tag_number","device_name", "device_model", "device_ram", "device_storage", "device_department", "device_directorate", "device_office", "officer_in_charge", "status" ]
     )
     if serial:
         return serial

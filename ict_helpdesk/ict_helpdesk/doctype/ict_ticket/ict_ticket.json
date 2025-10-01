@@ -49,13 +49,13 @@
   "network_issue_description",
   "clearance_issue_section",
   "clearance_issue_check",
-  "clearrance_issue_description",
+  "clearance_issue_description",
   "senior_ict_staff_tab",
   "senior_ict_officer",
   "issue_priority",
   "assigned_officer",
   "assigned_officer_email",
-  "assigned_officer_phone",
+  "assigned_officer_mobile",
   "issue_delegation_check",
   "ict_staff_tab",
   "to_be_filled_out_by_assigned_officer_section",
@@ -160,6 +160,7 @@
    "label": "Is it a recurring issue"
   },
   {
+   "depends_on": "eval:doc.department",
    "fieldname": "software_issue",
    "fieldtype": "Section Break",
    "label": "SOFTWARE ISSUE"
@@ -178,6 +179,7 @@
    "mandatory_depends_on": "eval:doc.software_issue_check == 1"
   },
   {
+   "depends_on": "eval:doc.department",
    "fieldname": "hardware_issue",
    "fieldtype": "Section Break",
    "label": "HARDWARE ISSUE"
@@ -211,6 +213,7 @@
    "label": "Serial Number"
   },
   {
+   "depends_on": "eval:doc.serial_number",
    "fieldname": "device_model",
    "fieldtype": "Data",
    "hidden": 1,
@@ -255,6 +258,7 @@
    "read_only": 1
   },
   {
+   "depends_on": "eval:doc.county_device_check",
    "fieldname": "officer_in_charge",
    "fieldtype": "Data",
    "hidden": 1,
@@ -282,6 +286,7 @@
    "mandatory_depends_on": "eval:doc.hardware_issue_check"
   },
   {
+   "depends_on": "eval:doc.department",
    "fieldname": "clearance_issue_section",
    "fieldtype": "Section Break",
    "label": "CLEARANCE ISSUE"
@@ -306,6 +311,7 @@
    "fieldname": "issue_priority",
    "fieldtype": "Select",
    "label": "Priority",
+   "mandatory_depends_on": "eval:doc.workflow_state === \"Awaiting Approval\";",
    "options": "Critical\nHigh\nMedium\nLow",
    "permlevel": 1
   },
@@ -321,17 +327,6 @@
    "fieldtype": "Data",
    "hidden": 1,
    "label": "Assigned Officer Email",
-   "mandatory_depends_on": "eval:doc.assigned_officer",
-   "permlevel": 1,
-   "read_only": 1,
-   "read_only_depends_on": "eval:doc.assigned_officer"
-  },
-  {
-   "fetch_from": "assigned_officer.phone_number",
-   "fieldname": "assigned_officer_phone",
-   "fieldtype": "Data",
-   "hidden": 1,
-   "label": "Assigned Officer Phone Number",
    "mandatory_depends_on": "eval:doc.assigned_officer",
    "permlevel": 1,
    "read_only": 1,
@@ -425,6 +420,7 @@
    "read_only": 1
   },
   {
+   "depends_on": "eval:doc.department",
    "fieldname": "network_issue_section",
    "fieldtype": "Section Break",
    "label": "INTERNET/NETWORK ISSUE"
@@ -441,7 +437,7 @@
    "fieldtype": "Select",
    "label": "type of Issue",
    "mandatory_depends_on": "eval:doc.internet_issue_check",
-   "options": "Slow WIFI\nWIFI not working\nCannot connect to WIFI\nNo internet connection"
+   "options": "\nSlow WIFI\nWIFI not working\nCannot connect to WIFI\nNo internet connection"
   },
   {
    "depends_on": "eval:doc.internet_issue_check",
@@ -449,13 +445,6 @@
    "fieldtype": "Text",
    "label": "Issue Description",
    "mandatory_depends_on": "eval:doc.internet_issue_check"
-  },
-  {
-   "depends_on": "eval:doc.clearance_issue_check",
-   "fieldname": "clearrance_issue_description",
-   "fieldtype": "Text",
-   "label": "Clearance Issue",
-   "mandatory_depends_on": "eval:doc.clearance_issue_check"
   },
   {
    "depends_on": "eval:doc.software_issue_check",
@@ -477,13 +466,31 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "depends_on": "eval:doc.clearance_issue_check",
+   "fieldname": "clearance_issue_description",
+   "fieldtype": "Text",
+   "label": "Clearance Issue",
+   "mandatory_depends_on": "eval:doc.clearance_issue_check"
+  },
+  {
+   "fetch_from": "assigned_officer.phone_number",
+   "fieldname": "assigned_officer_mobile",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Assigned Officer Phone Number",
+   "mandatory_depends_on": "eval:doc.assigned_officer",
+   "permlevel": 1,
+   "read_only": 1,
+   "read_only_depends_on": "eval:doc.assigned_officer"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-09-29 12:39:18.504823",
+ "modified": "2025-10-01 11:26:59.905860",
  "modified_by": "Administrator",
  "module": "Ict Helpdesk",
  "name": "ICT Ticket",

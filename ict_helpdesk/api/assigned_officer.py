@@ -5,8 +5,7 @@ def get_ict_officers():
     officers = frappe.get_all(
         "ICT Staff",
         filters={"designation": ["!=", "ICT Director"]},
-        fields=["full_name"],
-        as_dict=True
+        fields=["full_name"]
     )
     return officers
 
@@ -15,7 +14,6 @@ def get_officer_details(officer_name):
     officer = frappe.get_value(
         "ICT Staff",
         {"full_name": officer_name},
-        ["email", "mobile_no"],
-        as_dict=True
+        ["email", "mobile_no"]
     )
     return officer

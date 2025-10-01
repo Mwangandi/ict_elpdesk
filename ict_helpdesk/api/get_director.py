@@ -3,7 +3,7 @@ import frappe
 
 def get_director():
     # Get all users who have the "Director" role
-    director = frappe.get_(
+    director = frappe.get_all(
         "ICT Staff",
         filters={"designation": "ICT Director"},
         fields=["mobile_no", "email"]

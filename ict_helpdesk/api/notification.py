@@ -1,31 +1,38 @@
 import frappe
 from .sms import send_custom_sms as sms
 from .get_director import get_director
-
+ 
 
 # Director information
 director = get_director()
-director_email = director.get("email")
-director_mobile = director.get("mobile_no")
+
+if director:
+    director_email = director.get("email")
+    director_mobile = director.get("mobile_no")
+else:
+    frappe.log_error("No ICT Director found in ICT Staff", "Notification Error")
+    director_email = None
+    director_mobile = None
+
 
 # send_custom_sms takes two parameters: number (string) and message(string)
 @frappe.whitelist(allow_guest=False)
 def send_notification(doc, method):
     # requester info
-    requester_name = frappe.doc.full_name
-    requester_email = frappe.doc.email
-    requester_phone_number = frappe.doc.mobile_no
-    requester_department = frappe.doc.department
-    requester_location = frappe.doc.location
+    requester_name = doc.full_name
+    requester_email = doc.email
+    requester_phone_number = doc.mobile_no
+    requester_department = doc.department
+    requester_location = doc.location
 
     # assigned officer info
-    assigned_to = frappe.doc.assigned_officer
-    assigned_to_email = frappe.doc.assigned_offier_email
-    assigned_to_mobile = frappe.doc.assigned_officer_mobile
+    assigned_to = doc.assigned_officer
+    assigned_to_email = doc.assigned_officer_email
+    assigned_to_mobile = doc.assigned_officer_mobile
 
     if doc.has_value_changed("workflow_state") and doc.workflow_state == "Awaiting Approval":
         # send sms to directors
-        director_message = f"New ICT Ticket {doc.name} from {requester_name}, Dept: {requester_department}, Location: {requester_location}. Please review and approve."
+        director_message = f"New ICT Ticket {doc.name} from {requester_name},\n Dept: {requester_department},\n Location: {requester_location}. \nPlease review and approve."
         sms(director_mobile, director_message)
         # send email to directors
         frappe.sendmail(
@@ -48,7 +55,7 @@ def send_notification(doc, method):
     elif doc.workflow_state == "In Progress":
         # send sms to assigned_to
         # TODO: Ensure assigned_to_mobile is a field in the doctype
-        message_to_assigned = f"ICT Ticket {doc.name} has been assigned to you. Please take the necessary actions to resolve it."
+        message_to_assigned = f"ICT Ticket {doc.name} has been assigned to you.\n Please take the necessary actions to resolve it."
         sms(assigned_to_mobile, message_to_assigned)
         # send email to assigned_to
         frappe.sendmail(
@@ -72,7 +79,7 @@ def send_notification(doc, method):
         intern_mobile = doc.delegated_to.intern_mobile
         intern_email = doc.delegated_to.intern_email
         # send sms to intern
-        intern_message = f"ICT Ticket {doc.name} has been delegated to you. Please take the necessary actions to resolve it."
+        intern_message = f"ICT Ticket {doc.name} has been delegated to you.\n Please take the necessary actions to resolve it."
         sms(intern_mobile, intern_message)
 
         # send email to intern
@@ -94,7 +101,7 @@ def send_notification(doc, method):
         )
 
         # send sms to directors
-        director_delegate_msg = f"ICT Ticket {doc.name} assigned to officer {doc.assigned_to} has been delegated to {intern_name}."
+        director_delegate_msg = f"ICT Ticket {doc.name} assigned to officer {assigned_to} has been delegated to {intern_name}."
         sms(director_mobile, director_delegate_msg)
 
         # send email to directors
@@ -106,7 +113,7 @@ def send_notification(doc, method):
 
     elif doc.workflow_state == "On Hold":
         # send sms to directors
-        director_on_hold_msg = f"ICT Ticket {doc.name} assigned to officer {doc.assigned_to} has been put On Hold awaiting further updates."
+        director_on_hold_msg = f"ICT Ticket {doc.name} assigned to officer {assigned_to} has been put On Hold awaiting further updates."
         sms(director_mobile, director_on_hold_msg)
 
         # send email to directors
@@ -140,7 +147,7 @@ def send_notification(doc, method):
         )
 
         # send sms to directors
-        director_resolved_msg = f"ICT Ticket {doc.name} assigned to officer {doc.assigned_to} has been resolved. Pending review. "
+        director_resolved_msg = f"ICT Ticket {doc.name} assigned to officer {assigned_to} has been resolved. Pending review."
         sms(director_mobile, director_resolved_msg)
 
         # send email to directors
@@ -162,7 +169,7 @@ def send_notification(doc, method):
         )
 
         # send sms to directors
-        director_completed_msg = f"ICT Ticket {doc.name} assigned to officer {doc.assigned_to} has been completed."
+        director_completed_msg = f"ICT Ticket {doc.name} assigned to officer {assigned_to} has been completed."
         sms(director_mobile, director_completed_msg)
 
         # send email to directors
@@ -171,5 +178,4 @@ def send_notification(doc, method):
             subject=f"ICT Ticket {doc.name} Completed",
             message=director_completed_msg
         )
-        # Frappe inbuilt notification can be sent here if needed
          
