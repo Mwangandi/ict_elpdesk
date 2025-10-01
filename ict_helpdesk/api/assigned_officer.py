@@ -14,6 +14,7 @@ def get_officer_details(officer_name):
     officer = frappe.get_value(
         "ICT Staff",
         {"full_name": officer_name},
-        ["email", "mobile_no"]
+        ["email", "mobile_no"],
+        as_dict=True
     )
     return officer
