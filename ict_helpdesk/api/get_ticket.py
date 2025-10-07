@@ -7,17 +7,17 @@ def check_ticket_exists(ticket_no):
 
 
 @frappe.whitelist()
-def get_user_tickets():
-    """Return tickets depending on user's role (Officer or Requester)"""
+def get_user_tickets(priority=None, status=None):
+    """Return tickets depending on user's role (Officer or Requester), with optional filters."""
     user = frappe.session.user
 
     if not user or user == "Guest":
         return []
 
-    # Get all roles for the current user
+    # Get user roles
     roles = frappe.get_roles(user)
 
-    # List of roles considered as ICT Officers
+    # Define ICT officer roles
     officer_roles = [
         "ICT Officer I",
         "ICT Officer II",
@@ -26,26 +26,28 @@ def get_user_tickets():
         "Chief ICT Officer"
     ]
 
-    # Check if user has any of those roles
+    # Check role
     is_officer = any(role in roles for role in officer_roles)
 
-    # Determine filter
+    # Base filters
     if is_officer:
-        # Officer sees tickets assigned to them
         email = frappe.db.get_value("User", user, "email")
         filters = {"assigned_officer_email": email}
-    elif "ICT Director" in roles:
-        filters = {}
-    elif "Administrator" in roles:
-        filters = {}
+    elif "ICT Director" in roles or "Administrator" in roles:
+        filters = {}  # See all
     else:
-        # Normal user sees only their own tickets
-        filters = {"owner": user}
+        filters = {"owner": user}  # Normal user
+
+    # Apply web page filters (from JS)
+    if priority:
+        filters["issue_priority"] = priority
+    if status:
+        filters["status"] = status
 
     # Fetch tickets
     tickets = frappe.get_all(
         "ICT Ticket",
-        # filters=filters,
+        filters=filters,
         fields=[
             "name",
             "personal_number",
@@ -77,4 +79,3 @@ def get_user_tickets():
     )
 
     return tickets
-

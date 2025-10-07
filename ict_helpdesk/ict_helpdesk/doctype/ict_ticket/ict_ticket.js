@@ -5,11 +5,16 @@ frappe.ui.form.on("ICT Ticket", {
     onload_post_render: function(frm) {
         frm.events.apply_workflow_rules(frm);
         frm.events.validate_workflow_transition(frm);
+        // reacptcha script
+        if (!window.grecaptcha) {
+            $.getScript('https://www.google.com/recaptcha/api.js?render=6Ld4PeErAAAAALE3KDQlh2aMtYpGuKEOwiQVW9EN');
+        }
     },
     refresh: function(frm) {
         frm.events.apply_workflow_rules(frm);
         frm.events.set_department_software_options(frm);
         frm.events.validate_workflow_transition(frm);
+        frm.recaptcha_verified = false;
     },
     department: function(frm) {
         frm.events.set_department_software_options(frm);
@@ -55,7 +60,6 @@ frappe.ui.form.on("ICT Ticket", {
         }
     },
     apply_workflow_rules: function(frm) {
-
         const approval_fields = [
             "issue_summary", "image_attachment", "recurring_issue_check", "software_issue_check",
             "software_issue_type", "software_issue_description", "hardware_issue_check", "hardware_issue_description", 
@@ -94,7 +98,6 @@ frappe.ui.form.on("ICT Ticket", {
                 }
             });
         }
-
         else if (frm.doc.workflow_state === "In Progress" || frm.doc.workflow_state === "On Hold" || frm.doc.workflow_state === "Delegated") {
             if (!frm.doc.issue_priority || !frm.doc.assigned_officer) {
                 frappe.throw(__("Please set both Priority and Assigned Officer before moving to In Progress"));
@@ -104,13 +107,11 @@ frappe.ui.form.on("ICT Ticket", {
                 frm.set_df_property(fieldname, "hidden", 0);
             });
         }
-
         else if (frm.doc.workflow_state === "Resolved") {
             resolved_fields.forEach(fieldname => {
                 frm.set_df_property(fieldname, "read_only", 1);
             });
         }
-
         else if (frm.doc.workflow_state === "Awaiting Review") {
             ["report_attachment", "report"].forEach(fieldname => {
                 frm.set_df_property(fieldname, "read_only", 0);
@@ -121,7 +122,6 @@ frappe.ui.form.on("ICT Ticket", {
             });
             frm.refresh_fields(resolved_fields);
         }
-
         else if (frm.doc.workflow_state === "Completed") {
             Object.keys(frm.fields_dict).forEach(fieldname => {
                 frm.set_df_property(fieldname, "read_only", 1);
@@ -338,10 +338,82 @@ frappe.ui.form.on("ICT Ticket", {
         });
     },
     validate: function(frm) {
-        if (!frm.doc.software_issue_check && !frm.doc.hardware_issue_check && !frm.doc.internet_issue_check && !frm.doc.clearance_issue_check) {
-            frappe.throw(__("You must select at least one issue type: Software, Hardware, or Clearance."));
+        // Prevent infinite loop: skip if already verified
+        if (frm.recaptcha_verified) {
+            frappe.validated = true;
+
+            // Now check your other conditions
+            if (
+                !frm.doc.software_issue_check &&
+                !frm.doc.hardware_issue_check &&
+                !frm.doc.internet_issue_check &&
+                !frm.doc.clearance_issue_check
+            ) {
+                frappe.throw(__("You must select at least one issue type: Software, Hardware, Internet, or Clearance."));
+            }
+
+            return; // Allow normal save
         }
+
+        // Stop normal validation flow until reCAPTCHA passes
+        frappe.validated = false;
+
+        grecaptcha.ready(function() {
+            grecaptcha.execute('6Ld4PeErAAAAALE3KDQlh2aMtYpGuKEOwiQVW9EN', { action: 'submit_ticket' })
+                .then(function(token) {
+                    frappe.call({
+                        method: "ict_helpdesk.api.recaptcha.verify_recaptcha",
+                        args: { token: token },
+                        callback: function(r) {
+                            if (r.message === true) {
+                                // Mark verified to prevent re-loop
+                                frm.recaptcha_verified = true;
+                                frappe.validated = true;
+
+                                // Save again silently
+                                frm.save();
+                            } else {
+                                frappe.msgprint(__('reCAPTCHA verification failed. Please try again.'));
+                            }
+                        }
+                    });
+                });
+        });
     },
+
+
+    // validate: function(frm) {
+    //     // Stop normal validation flow until reCAPTCHA passes
+    //     frappe.validated = false;
+
+    //     grecaptcha.ready(function() {
+    //         grecaptcha.execute('6Ld4PeErAAAAALE3KDQlh2aMtYpGuKEOwiQVW9EN', {action: 'submit_ticket'}).then(function(token) {
+    //             // Verify token server-side
+    //             frappe.call({
+    //                 method: "ict_helpdesk.api.recaptcha.verify_recaptcha",
+    //                 args: { token: token },
+    //                 callback: function(r) {
+    //                     if (r.message === true) {
+    //                         frappe.validated = true;
+    //                         frm.events.after_recaptcha_pass(frm);
+    //                     } else {
+    //                         frappe.msgprint(__('reCAPTCHA verification failed. Please try again.'));
+    //                     }
+    //                 }
+    //             });
+    //         });
+    //     });
+    //     if (!frm.doc.software_issue_check && !frm.doc.hardware_issue_check && !frm.doc.internet_issue_check && !frm.doc.clearance_issue_check) {
+    //         frappe.throw(__("You must select at least one issue type: Software, Hardware, or Clearance."));
+    //     }
+    // },
+
+
+
+    // after_recaptcha_pass: function(frm) {
+    // frappe.validated = true;
+    // frm.save('Save');
+    // }
 });
 
 
