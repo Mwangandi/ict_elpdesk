@@ -1,11 +1,12 @@
 import frappe
 
+# Geto
 @frappe.whitelist()
 def get_ict_officers():
     officers = frappe.get_all(
         "ICT Staff",
-        filters={"designation": ["!=", "ICT Director"]},
-        fields=["full_name"]
+        # filters={"designation": ["!=", "ICT Director"]},
+        fields=["full_name","email","mobile_no", "designation"]
     )
     return officers
 

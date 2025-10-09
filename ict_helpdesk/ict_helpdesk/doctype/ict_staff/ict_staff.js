@@ -16,7 +16,7 @@ frappe.ui.form.on("ICT Staff", {
                 });
             }
         });
-    },
+    }, 
     first_name: function(frm){
         frm.events.update_name(frm);
     },

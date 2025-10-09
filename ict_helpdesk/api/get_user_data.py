@@ -20,7 +20,7 @@ def ticket_personal_num(personal_number):
     requester_dets = frappe.db.get_value(
         "User",
         {"personal_number": personal_number},
-        ["first_name","middle_name", "last_name", "mobile_no", "email", "department", "directorate", "location"],
+        ["first_name","middle_name", "last_name", "mobile_no", "email", "department", "directorate", "location","designation"],
         as_dict=True
     )
     if requester_dets:

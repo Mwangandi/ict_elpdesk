@@ -1,7 +1,6 @@
-import frappe
+import frappe, time
 from .sms import send_custom_sms as sms
 from .get_director import get_director
- 
 
 # Director information
 director = get_director()
@@ -32,7 +31,7 @@ def send_notification(doc, method):
 
     if doc.has_value_changed("workflow_state") and doc.workflow_state == "Awaiting Approval":
         # send sms to directors
-        director_message = f"New ICT Ticket {doc.name} from {requester_name},\n Dept: {requester_department},\n Location: {requester_location}. \nPlease review and approve."
+        director_message = f"New ICT Ticket {doc.name} from {requester_name},\n Department: {requester_department},\n Location: {requester_location}. \nPlease review and approve."
         sms(director_mobile, director_message)
         # send email to directors
         frappe.sendmail(
@@ -40,6 +39,8 @@ def send_notification(doc, method):
             subject=f"New ICT Ticket {doc.name} from {requester_department} Awaiting Approval",
             message=director_message
         )
+
+        time.sleep(8)  # Pause for 8 seconds to avoid SMS gateway rate limits
 
         #send sms to requester
         requester_message = f"Your ICT Ticket {doc.name} has been created and is awaiting approval."
@@ -64,6 +65,8 @@ def send_notification(doc, method):
             message=message_to_assigned
         )
 
+        time.sleep(8)  # Pause for 5 seconds to avoid SMS gateway rate limits
+        
         # send sms to requester
         requester_progress_msg = f"Your ICT Ticket {doc.name} is now In Progress and being handled by {assigned_to}."
         sms(requester_phone_number, requester_progress_msg)
@@ -89,6 +92,8 @@ def send_notification(doc, method):
             message=intern_message
         )
 
+        time.sleep(8)  # Pause for 8 seconds to avoid SMS gateway rate limits
+
         # send sms to requester
         requester_delegate_msg = f"Your ICT Ticket {doc.name} has been delegated to {intern_name} for resolution."
         sms(requester_phone_number, requester_delegate_msg)
@@ -99,7 +104,7 @@ def send_notification(doc, method):
             subject=f"ICT Ticket {doc.name} Delegated",
             message=requester_delegate_msg
         )
-
+        time.sleep(8)  # Pause for 8 seconds to avoid SMS gateway rate limits
         # send sms to directors
         director_delegate_msg = f"ICT Ticket {doc.name} assigned to officer {assigned_to} has been delegated to {intern_name}."
         sms(director_mobile, director_delegate_msg)
@@ -122,6 +127,8 @@ def send_notification(doc, method):
             subject=f"ICT Ticket {doc.name} On Hold",
             message=director_on_hold_msg
         )
+
+        time.sleep(8)  # Pause for 8 seconds to avoid SMS gateway rate limits
 
         # send sms to requester
         requester_on_hold_msg = f"Your ICT Ticket {doc.name} has been put On Hold awaiting further updates."
@@ -146,6 +153,8 @@ def send_notification(doc, method):
             message=requester_resolved_msg
         )
 
+        time.sleep(8)  # Pause for 8 seconds to avoid SMS gateway rate limits
+
         # send sms to directors
         director_resolved_msg = f"ICT Ticket {doc.name} assigned to officer {assigned_to} has been resolved. Pending review."
         sms(director_mobile, director_resolved_msg)
@@ -168,6 +177,8 @@ def send_notification(doc, method):
             message=requester_completed_msg
         )
 
+        time.sleep(8)  # Pause for 8 seconds to avoid SMS gateway rate limits
+        
         # send sms to directors
         director_completed_msg = f"ICT Ticket {doc.name} assigned to officer {assigned_to} has been completed."
         sms(director_mobile, director_completed_msg)

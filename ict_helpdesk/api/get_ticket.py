@@ -6,45 +6,47 @@ def check_ticket_exists(ticket_no):
     return frappe.db.exists("ICT Ticket", ticket_no)
 
 
+import frappe
+
 @frappe.whitelist()
 def get_user_tickets(priority=None, status=None):
-    """Return tickets depending on user's role (Officer or Requester), with optional filters."""
     user = frappe.session.user
 
-    if not user or user == "Guest":
-        return []
+    # Fetch staff info
+    staff = frappe.db.get_value(
+        "ICT Staff",
+        {"email": user},
+        ["email", "designation"],
+        as_dict=True
+    )
 
-    # Get user roles
-    roles = frappe.get_roles(user)
+    filters = {}
 
-    # Define ICT officer roles
-    officer_roles = [
-        "ICT Officer I",
-        "ICT Officer II",
-        "ICT Officer III",
-        "Senior ICT Officer",
-        "Chief ICT Officer"
-    ]
+    if not staff:
+        # Not ICT staff → show own tickets only
+        filters["owner"] = user
 
-    # Check role
-    is_officer = any(role in roles for role in officer_roles)
-
-    # Base filters
-    if is_officer:
-        email = frappe.db.get_value("User", user, "email")
-        filters = {"assigned_officer_email": email}
-    elif "ICT Director" in roles or "Administrator" in roles:
-        filters = {}  # See all
     else:
-        filters = {"owner": user}  # Normal user
+        designation = staff.designation or ""
 
-    # Apply web page filters (from JS)
+        if any(title in designation for title in ["ICT Officer", "Senior ICT Officer", "Chief ICT Officer"]):
+            # Officer can only see assigned tickets
+            filters["assigned_officer_email"] = staff.email
+
+        elif "ICT Director" in designation or user == "Administrator":
+            # Director or admin → see all
+            filters = {}
+
+        else:
+            # Default case (normal employee)
+            filters["owner"] = user
+
+    # Apply frontend filters (from JS)
     if priority:
         filters["issue_priority"] = priority
     if status:
         filters["status"] = status
 
-    # Fetch tickets
     tickets = frappe.get_all(
         "ICT Ticket",
         filters=filters,
@@ -54,26 +56,17 @@ def get_user_tickets(priority=None, status=None):
             "full_name",
             "mobile_no",
             "email",
+            "department",
             "issue_summary",
             "recurring_issue_check",
             "software_issue_type",
             "software_issue_description",
             "county_device_check",
-            "tag_number",
-            "serial_number",
-            "device_office",
-            "hardware_issue_description",
-            "internet_issue_check",
-            "internet_issue_type",
-            "network_issue_description",
-            "clearance_issue_check",
-            "clearance_issue_description",
             "issue_priority",
             "assigned_officer",
             "assigned_officer_email",
             "assigned_officer_mobile",
             "status",
-            "creation"
         ],
         order_by="creation desc"
     )

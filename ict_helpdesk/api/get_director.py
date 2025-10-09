@@ -10,4 +10,11 @@ def get_director():
     )
     if not director:
         return None
-    return director
+    print(director)
+    return director[0]
+
+# if __name__ == "__main__":
+#     get_director()
+
+
+ 

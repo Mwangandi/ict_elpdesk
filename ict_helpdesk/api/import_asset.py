@@ -34,5 +34,5 @@ def import_asset_data():
                 frappe.log_error(message=str(e), title="Asset Data Import Error")
                 print(f"Error inserting row: {row} - {e}")
 
-if __name__ == "__main__":
-    import_asset_data()
+# if __name__ == "__main__":
+#     import_asset_data()
