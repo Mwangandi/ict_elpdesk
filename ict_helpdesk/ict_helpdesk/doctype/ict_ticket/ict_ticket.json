@@ -20,7 +20,6 @@
   "location",
   "designation",
   "section_break_kvwa",
-  "issue_summary",
   "image_attachment",
   "recurring_issue_check",
   "software_issue",
@@ -29,6 +28,7 @@
   "software_issue_description",
   "hardware_issue",
   "hardware_issue_check",
+  "personal_device",
   "county_device_check",
   "tag_number",
   "serial_number",
@@ -93,6 +93,7 @@
    "in_list_view": 1,
    "label": "Personal Number",
    "length": 20,
+   "read_only": 1,
    "reqd": 1
   },
   {
@@ -143,12 +144,6 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "issue_summary",
-   "fieldtype": "Small Text",
-   "label": "Issue Summary",
-   "reqd": 1
-  },
-  {
    "fieldname": "image_attachment",
    "fieldtype": "Attach Image",
    "label": "Attach an Image if necessary"
@@ -157,7 +152,7 @@
    "default": "0",
    "fieldname": "recurring_issue_check",
    "fieldtype": "Check",
-   "label": "Is it a recurring issue"
+   "label": "Check if it is a recurring issue"
   },
   {
    "depends_on": "eval:doc.department",
@@ -372,7 +367,7 @@
    "default": "0",
    "fieldname": "resolve_issue_check",
    "fieldtype": "Check",
-   "label": "Resolve Issue",
+   "label": "Mark Ticket as Resolved",
    "permlevel": 1
   },
   {
@@ -483,13 +478,20 @@
    "permlevel": 1,
    "read_only": 1,
    "read_only_depends_on": "eval:doc.assigned_officer"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.hardware_issue_check == 1;",
+   "fieldname": "personal_device",
+   "fieldtype": "Check",
+   "label": "Personal Device"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-10-01 13:31:28.874405",
+ "modified": "2025-10-16 13:48:03.314383",
  "modified_by": "Administrator",
  "module": "Ict Helpdesk",
  "name": "ICT Ticket",
@@ -679,6 +681,59 @@
    "role": "ICT Officer (I, II, III)",
    "select": 1,
    "share": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "select": 1,
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "permlevel": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "permlevel": 2,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "permlevel": 3,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "select": 1,
+   "share": 1,
+   "write": 1
   }
  ],
  "row_format": "Dynamic",

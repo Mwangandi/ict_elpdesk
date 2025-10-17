@@ -7,22 +7,22 @@
  "allow_print": 0,
  "anonymous": 0,
  "apply_document_permissions": 0,
- "banner_image": "/private/files/Coat_of_Arms_of_Taita_Taveta_County(2).png",
+ "banner_image": "",
  "button_label": "Submit",
  "client_script": "",
- "condition_json": "[]",
+ "condition_json": "[[\"Has Role\",\"role\",\"=\",\"Requester\",false]]",
  "creation": "2025-09-25 16:41:00.975241",
- "custom_css": "\n{\"border_color\": \"#d1d8dd\"}\n\n\n\n.web-form-title h1 {\n    font-size: 20px !important; \n}\n/* Banner wrapper */\n.web-form-hero {\n    text-align: center;\n    margin-bottom: 2rem;\n}\n\n/* Banner container */\n.web-form-banner {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n\n/* Actual banner image */\n.web-form-banner img,\n.web-form-banner-image {\n    max-height: 150px !important;\n    max-width: 150px !important;\n    object-fit: contain;\n}\n\n.web-form-banner-image {\n    z-index: 2 !important;\n    margin-bottom: -3rem !important;\n    height: 150px !important;\n    width: 150px !important;\n    text-align: center !important;\n}\n\n.page-header {\n    text-align: center;\n}",
- "doc_type": "Staff Details",
+ "custom_css": "\n{\"border_color\": \"#d1d8dd\";}\n\n\n\n.web-form-title h1 {\n    font-size: 20px !important; \n}\n/* Banner wrapper */\n.web-form-hero {\n    text-align: center;\n    margin-bottom: 2rem;\n}\n\n/* Banner container */\n.web-form-banner {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n\n/* Actual banner image */\n.web-form-banner img,\n.web-form-banner-image {\n    max-height: 150px !important;\n    max-width: 150px !important;\n    object-fit: contain;\n}\n\n.web-form-banner-image {\n    z-index: 2 !important;\n    margin-bottom: -3rem !important;\n    height: 150px !important;\n    width: 150px !important;\n    text-align: center !important;\n}\n\n.page-header {\n    text-align: center;\n}",
+ "doc_type": "User",
  "docstatus": 0,
  "doctype": "Web Form",
- "idx": 0,
+ "idx": 1,
  "introduction_text": "<div class=\"ql-editor read-mode\"><p>Enter your Personal Number to register into Taita Taveta County ICT HelpDesk Portal</p></div>",
  "is_standard": 1,
  "list_columns": [],
  "login_required": 0,
  "max_attachment_size": 0,
- "modified": "2025-09-25 23:57:59.829800",
+ "modified": "2025-10-17 08:44:19.075283",
  "modified_by": "Administrator",
  "module": "Ict Helpdesk",
  "name": "register",
@@ -32,6 +32,7 @@
  "show_attachments": 0,
  "show_list": 0,
  "show_sidebar": 0,
+ "success_url": "/login",
  "title": "register",
  "web_form_fields": [
   {
@@ -44,7 +45,7 @@
    "max_value": 0,
    "precision": "",
    "read_only": 0,
-   "reqd": 1,
+   "reqd": 0,
    "show_in_filter": 0
   },
   {
@@ -57,7 +58,7 @@
    "max_value": 0,
    "precision": "",
    "read_only": 0,
-   "reqd": 1,
+   "reqd": 0,
    "show_in_filter": 0
   },
   {
@@ -70,7 +71,7 @@
    "max_value": 0,
    "precision": "",
    "read_only": 0,
-   "reqd": 1,
+   "reqd": 0,
    "show_in_filter": 0
   },
   {
@@ -83,7 +84,7 @@
    "max_value": 0,
    "precision": "",
    "read_only": 0,
-   "reqd": 1,
+   "reqd": 0,
    "show_in_filter": 0
   },
   {
@@ -96,7 +97,7 @@
    "max_value": 0,
    "precision": "",
    "read_only": 0,
-   "reqd": 1,
+   "reqd": 0,
    "show_in_filter": 0
   },
   {
@@ -109,7 +110,7 @@
    "max_value": 0,
    "precision": "",
    "read_only": 0,
-   "reqd": 1,
+   "reqd": 0,
    "show_in_filter": 0
   },
   {
@@ -122,7 +123,7 @@
    "max_value": 0,
    "precision": "",
    "read_only": 0,
-   "reqd": 1,
+   "reqd": 0,
    "show_in_filter": 0
   },
   {
@@ -135,7 +136,7 @@
    "max_value": 0,
    "precision": "",
    "read_only": 0,
-   "reqd": 1,
+   "reqd": 0,
    "show_in_filter": 0
   },
   {
@@ -148,7 +149,7 @@
    "max_value": 0,
    "precision": "",
    "read_only": 0,
-   "reqd": 1,
+   "reqd": 0,
    "show_in_filter": 0
   },
   {
@@ -161,20 +162,18 @@
    "max_value": 0,
    "precision": "",
    "read_only": 0,
-   "reqd": 1,
+   "reqd": 0,
    "show_in_filter": 0
   },
   {
    "allow_read_on_all_link_options": 0,
-   "fieldname": "date_of_birth",
-   "fieldtype": "Data",
+   "fieldtype": "Attach",
    "hidden": 0,
-   "label": "Date Of Birth",
    "max_length": 0,
    "max_value": 0,
    "precision": "",
    "read_only": 0,
-   "reqd": 1,
+   "reqd": 0,
    "show_in_filter": 0
   }
  ]

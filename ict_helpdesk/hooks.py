@@ -8,18 +8,18 @@ app_license = "mit"
 # Apps
 # ------------------
 
-# required_apps = []
+required_apps = []
 
 # Each item in the list will be shown as an app in the apps page
-# add_to_apps_screen = [
-# 	{
-# 		"name": "ict_helpdesk",
-# 		"logo": "/assets/ict_helpdesk/logo.png",
-# 		"title": "Ict Helpdesk",
-# 		"route": "/ict_helpdesk",
-# 		"has_permission": "ict_helpdesk.api.permission.has_app_permission"
-# 	}
-# ]
+add_to_apps_screen = [
+	{
+		"name": "ict_helpdesk",
+		"logo": "/assets/ict_helpdesk/logo.png",
+		"title": "Ict Helpdesk",
+		"route": "/ict_helpdesk",
+		"has_permission": "ict_helpdesk.api.permission.has_app_permission"
+	}
+]
 
 # Includes in <head>
 # ------------------
@@ -242,6 +242,7 @@ app_license = "mit"
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
+# custom register form
 website_route_rules = [
     {"from_route": "/signup", "to_route": "/register"}
 ]
@@ -249,14 +250,28 @@ website_route_rules = [
 # app_include_css = "/public/css/edit_login.css"
 # website_include_css = ["/assets/ict_helpdesk/css/edit_login.css"]
 
-website_include_js = ["/assets/ict_helpdesk/js/edit_login.js"]
+# website_include_js = ["/assets/ict_helpdesk/js/edit_login.js"]
 
 doc_events = {
     "ICT Ticket": {
         "on_update": "ict_helpdesk.api.notification.send_notification"
+    },
+    "User": {
+        "after_insert": "ict_helpdesk.api.user_hooks.set_default_user_settings"
     }
 }
 
+# ict_helpdesk/hooks.py
+# boot_session = "ict_helpdesk.api.session.custom_boot_session"
 
+homepage = "ict-helpdesk"
+
+website_route_redirects = [
+    {"source": "/app", "target": "/ict-helpdesk"},
+]
+
+# login_manager = "ict_helpdesk.api.redirect.custom_login_redirect"
+
+# login_redirect = "ict_helpdesk.api.redirect.custom_login_redirect"
 
 

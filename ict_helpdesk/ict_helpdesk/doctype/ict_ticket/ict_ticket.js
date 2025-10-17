@@ -5,16 +5,75 @@ frappe.ui.form.on("ICT Ticket", {
     onload_post_render: function(frm) {
         frm.events.apply_workflow_rules(frm);
         frm.events.validate_workflow_transition(frm);
+        //====================
+        if (frm.is_new()){
+            console.log("New ticket detected, fetching user data...");
+            frappe.call({
+            method: "ict_helpdesk.api.get_user_data.ticket_personal_number",
+            // args: {personal_number: frm.doc.personal_number},
+            callback: function(r){ 
+                console.log(r.message)
+                const full_name = r.message.first_name+ " " + r.message.middle_name + " " + r.message.last_name;
+                frm.set_value("full_name", full_name);
+                frm.set_df_property("full_name", "hidden", 0);
+                frm.refresh_field("full_name");
+                const fields = [
+                    "personal_number","phone_number", "email", "mobile_no","department", "directorate", "location", "designation"
+                ]
+                fields.forEach(function(fieldname) {
+                    if(r.message[fieldname]){
+                        frm.set_value(fieldname, r.message[fieldname]);
+                        frm.set_df_property(fieldname, "hidden", 0);
+                        frm.refresh_field(fieldname);
+                    }
+                });
+            }
+            });
+        }
         // reacptcha script
         if (!window.grecaptcha) {
             $.getScript('https://www.google.com/recaptcha/api.js?render=6Ld4PeErAAAAALE3KDQlh2aMtYpGuKEOwiQVW9EN');
         }
     },
+    // after_save(frm) {
+    //     // Check if the current workflow action is "Send for Approval"
+    //     if (frm.doc.workflow_state === "Awaiting Approval" && frm.doc._last_workflow_action === "Send for Approval") {
+    //         window.location.href("/app/ict-ticket");
+    //     }
+    // },
     refresh: function(frm) {
         frm.events.apply_workflow_rules(frm);
         frm.events.set_department_software_options(frm);
         frm.events.validate_workflow_transition(frm);
         frm.recaptcha_verified = false;
+        setTimeout(() => {
+            $(".form-message-container:contains('This form is not editable due to a Workflow.')").hide();
+        }, 300);
+
+        if (!frm.is_new()) {
+            // Make sure fields remain read-only after save
+            const fields = [
+                "personal_number",
+                "full_name",
+                "phone_number",
+                "email",
+                "mobile_no",
+                "department",
+                "directorate",
+                "location",
+                "designation"
+            ];
+
+            fields.forEach(fieldname => {
+                frm.set_df_property(fieldname, "read_only", 1);
+                frm.set_df_property(fieldname, "hidden", 0);
+            });
+            frm.refresh_fields(fields);
+        }
+        if (frm.doc.workflow_state === "Awaiting Approval" && frm.doc._last_workflow_action === "Send for Approval" && frappe.user_roles.includes("Requester")) {
+            // window.location.href = "/app/ict-ticket";
+            frappe.set_route("/app/ict-ticket");
+        }
     },
     department: function(frm) {
         frm.events.set_department_software_options(frm);
@@ -78,7 +137,6 @@ frappe.ui.form.on("ICT Ticket", {
             "delegate_to", "report_attachment", "report", "resolve_issue_check"
         ];
 
-
         if (frm.doc.workflow_state === "Awaiting Approval") {
             approval_fields.forEach(fieldname => {
                 frm.set_df_property(fieldname, "read_only", 1);
@@ -140,10 +198,11 @@ frappe.ui.form.on("ICT Ticket", {
                 frm.refresh_field(fieldname);
             });
         }
-
+        // TODO: Add more fields
         const finance_issues = ["IFMIS", "IB", "Windows"];
         const hr_issues = ["Windows", "Excel", "Office"];
         const health_issues = ["SHA Portal", "Windows", "Office"];
+        const revenue_issues = ["iTax", "Windows", "Office"];
 
         if (frm.doc.department == "Finance and Economic Planning") {
             frm.set_df_property("software_issue_type", "options", finance_issues.join("\n"));
@@ -163,30 +222,57 @@ frappe.ui.form.on("ICT Ticket", {
     },
 
 // ======================================== AUTO POPULATING PERSONAL NUMBER ===========================================================================
-    personal_number: function(frm){
-        if(!frm.doc.personal_number) return;
+    // personal_number: function(frm){
+    //     if(!frm.doc.personal_number) return;
 
-        frappe.call({
-            method: "ict_helpdesk.api.get_user_data.ticket_personal_num",
-            args: {personal_number: frm.doc.personal_number},
-            callback: function(r){ 
-                const full_name = r.message.first_name+ " " + r.message.middle_name + " " + r.message.last_name;
-                frm.set_value("full_name", full_name);
-                frm.set_df_property("full_name", "hidden", 0);
-                frm.refresh_field("full_name");
-                const fields = [
-                    "phone_number", "email", "mobile_no","department", "directorate", "location", "designation"
-                ]
-                fields.forEach(function(fieldname) {
-                    if(r.message[fieldname]){
-                        frm.set_value(fieldname, r.message[fieldname]);
-                        frm.set_df_property(fieldname, "hidden", 0);
-                        frm.refresh_field(fieldname);
-                    }
-                });
-            }
-        });
-    },
+    //     frappe.call({
+    //         method: "ict_helpdesk.api.get_user_data.ticket_personal_number",
+    //         // TODO: Auto fetch from user info instead of manual entry
+    //         // args: {personal_number: frm.doc.personal_number},
+    //         callback: function(r){ 
+    //             const full_name = r.message.first_name+ " " + r.message.middle_name + " " + r.message.last_name;
+    //             frm.set_value("full_name", full_name);
+    //             frm.set_df_property("full_name", "hidden", 0);
+    //             frm.refresh_field("full_name");
+    //             const fields = [
+    //                 "phone_number", "email", "mobile_no","department", "directorate", "location", "designation"
+    //             ]
+    //             fields.forEach(function(fieldname) {
+    //                 if(r.message[fieldname]){
+    //                     frm.set_value(fieldname, r.message[fieldname]);
+    //                     frm.set_df_property(fieldname, "hidden", 0);
+    //                     frm.refresh_field(fieldname);
+    //                 }
+    //             });
+    //         }
+    //     });
+    // },
+    //  p_num: function(frm){
+    //     if(!frm.doc.personal_number) return;
+
+    //     frappe.call({
+    //         method: "ict_helpdesk.api.get_user_data.ticket_personal_number",
+    //         // TODO: Auto fetch from user info instead of manual entry
+    //         // args: {personal_number: frm.doc.personal_number},
+    //         callback: function(r){ 
+    //             console.log(r.message)
+    //             const full_name = r.message.first_name+ " " + r.message.middle_name + " " + r.message.last_name;
+    //             frm.set_value("full_name", full_name);
+    //             frm.set_df_property("full_name", "hidden", 0);
+    //             frm.refresh_field("full_name");
+    //             const fields = [
+    //                 "phone_number", "email", "mobile_no","department", "directorate", "location", "designation"
+    //             ]
+    //             fields.forEach(function(fieldname) {
+    //                 if(r.message[fieldname]){
+    //                     frm.set_value(fieldname, r.message[fieldname]);
+    //                     frm.set_df_property(fieldname, "hidden", 0);
+    //                     frm.refresh_field(fieldname);
+    //                 }
+    //             });
+    //         }
+    //     });
+    // },
 // ============================================================================================================================================
 
 // ===================================================== AUTOPOPULATING DEVICE ========================================================================
@@ -214,7 +300,7 @@ frappe.ui.form.on("ICT Ticket", {
                             frm.refresh_field(fieldname);
                         }
                     });
-                    if(r.message.device_name == "All in One" || r.message.device_name == "Laptop" || r.message.device_name == "System Unit"){
+                    if(r.message.device_name == "All in One" || r.message.device_name == "Laptop" || r.message.device_name == "System Unit" || r.message.device_name == "phone" || r.message.device_name == "Tablet" || r.message.device_name == "Server"){
                         specific_fields.forEach(function(fieldname){
                             if(r.message[fieldname]){
                                 frm.set_value(fieldname, r.message[f]);
@@ -277,14 +363,14 @@ frappe.ui.form.on("ICT Ticket", {
     hardware_issue_check: function(frm){
         if(frm.doc.hardware_issue_check == 0){
             const hardware_section = [
-                "county_device_check", "tag_number", "serial_number", "device_name", "device_model", "device_ram","device_storage",
+                "county_device_check","personal_device", "tag_number", "serial_number", "device_name", "device_model", "device_ram","device_storage",
                 "device_department", "device_directorate", "device_office", "officer_in_charge", "device_status"
             ]
             hardware_section.forEach(function(fieldname){
                 frm.set_value(fieldname, "");
                 frm.refresh_field(fieldname);
             });
-            frm.refresh_field(["county_device_check", "tag_number", "serial_number", "device_name", "device_model", "device_ram","device_storage",
+            frm.refresh_field(["county_device_check","personal_device", "tag_number", "serial_number", "device_name", "device_model", "device_ram","device_storage",
                 "device_department", "device_directorate", "device_office", "officer_in_charge", "device_status"])
         }
     },
@@ -326,7 +412,7 @@ frappe.ui.form.on("ICT Ticket", {
                 officer_name: frm.doc.assigned_officer
             },
             callback: function(r) {
-                if (r.message) {
+                if (r.message && r.message.designation != "ICT Director") {
                     console.log(r.message);
                     frm.set_value("assigned_officer_email", r.message.email);
                     frm.set_df_property("assigned_officer_email", "hidden", 0);
@@ -379,41 +465,5 @@ frappe.ui.form.on("ICT Ticket", {
                     });
                 });
         });
-    },
-
-
-    // validate: function(frm) {
-    //     // Stop normal validation flow until reCAPTCHA passes
-    //     frappe.validated = false;
-
-    //     grecaptcha.ready(function() {
-    //         grecaptcha.execute('6Ld4PeErAAAAALE3KDQlh2aMtYpGuKEOwiQVW9EN', {action: 'submit_ticket'}).then(function(token) {
-    //             // Verify token server-side
-    //             frappe.call({
-    //                 method: "ict_helpdesk.api.recaptcha.verify_recaptcha",
-    //                 args: { token: token },
-    //                 callback: function(r) {
-    //                     if (r.message === true) {
-    //                         frappe.validated = true;
-    //                         frm.events.after_recaptcha_pass(frm);
-    //                     } else {
-    //                         frappe.msgprint(__('reCAPTCHA verification failed. Please try again.'));
-    //                     }
-    //                 }
-    //             });
-    //         });
-    //     });
-    //     if (!frm.doc.software_issue_check && !frm.doc.hardware_issue_check && !frm.doc.internet_issue_check && !frm.doc.clearance_issue_check) {
-    //         frappe.throw(__("You must select at least one issue type: Software, Hardware, or Clearance."));
-    //     }
-    // },
-
-
-
-    // after_recaptcha_pass: function(frm) {
-    // frappe.validated = true;
-    // frm.save('Save');
-    // }
+    }
 });
-
-

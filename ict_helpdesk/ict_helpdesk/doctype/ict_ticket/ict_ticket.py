@@ -41,7 +41,7 @@ def has_permission(doc, user):
     return doc.owner == user
 
 
-
+ 
 class ICTTicket(Document):
     def validate(self):
         if not (self.software_issue_check or self.hardware_issue_check or self.clearance_issue_check or self.internet_issue_check):

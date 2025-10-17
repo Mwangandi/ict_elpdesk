@@ -27,6 +27,20 @@ def ticket_personal_num(personal_number):
         return requester_dets
     return None
 
+@frappe.whitelist(allow_guest=False)
+def ticket_personal_number():
+    user = frappe.session.user
+    personal_number = frappe.db.get_value("User", user, "personal_number")
+    requester_dets = frappe.db.get_value(
+        "User",
+        {"personal_number": personal_number},
+        ["personal_number","first_name","middle_name", "last_name", "mobile_no", "email", "department", "directorate", "location","designation"],
+        as_dict=True
+    )
+    if requester_dets:
+        return requester_dets
+    return None
+
 
 # getting ICT Staff  DOCTYPE INFO
 @frappe.whitelist(allow_guest=False)
