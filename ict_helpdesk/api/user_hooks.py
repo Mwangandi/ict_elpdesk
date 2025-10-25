@@ -8,8 +8,8 @@ def set_default_user_settings(doc, method=None):
     default_password = "default123"
     frappe.utils.password.update_password(user=doc.email, pwd=default_password)
 
-    
-    # Assign the "Requester" role if not already assigned
+    # Notes, cannot assign role and role profile
+    # # Assign the "Requester" role profile if not already assigned
     if not frappe.db.exists("Has Role", {"parent": doc.name, "role": "Requester"}):
         doc.add_roles("Requester")
     

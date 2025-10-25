@@ -19,6 +19,8 @@ def get_user_tickets(priority=None, status=None):
         ["email", "designation"],
         as_dict=True
     )
+    role_profile = frappe.db.get_value("User", user, "role_profile_name")
+
 
     filters = {}
 
@@ -32,11 +34,9 @@ def get_user_tickets(priority=None, status=None):
         if any(title in designation for title in ["ICT Officer", "Senior ICT Officer", "Chief ICT Officer"]):
             # Officer can only see assigned tickets
             filters["assigned_officer_email"] = staff.email
-
-        elif "ICT Director" in designation or user == "Administrator":
+        elif "ICT Director" in designation or role_profile == "Admin 2":
             # Director or admin → see all
             filters = {}
-
         else:
             # Default case (normal employee)
             filters["owner"] = user

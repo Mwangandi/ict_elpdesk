@@ -295,7 +295,7 @@
   {
    "fieldname": "senior_ict_staff_tab",
    "fieldtype": "Tab Break",
-   "label": "SENIOR ICT STAFF"
+   "label": "ICT DIRECTOR"
   },
   {
    "fieldname": "senior_ict_officer",
@@ -336,7 +336,7 @@
   {
    "fieldname": "ict_staff_tab",
    "fieldtype": "Tab Break",
-   "label": "ICT STAFF"
+   "label": "ICT OFFICER"
   },
   {
    "fieldname": "to_be_filled_out_by_assigned_officer_section",
@@ -373,7 +373,7 @@
   {
    "fieldname": "chief_ict_staff_tab",
    "fieldtype": "Tab Break",
-   "label": "SENIOR ICT STAFF"
+   "label": "ICT DIRECTOR"
   },
   {
    "fieldname": "to_be_filled_out_by_a_senior_ict_officer_section",
@@ -491,7 +491,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-10-16 13:48:03.314383",
+ "modified": "2025-10-17 14:35:45.276314",
  "modified_by": "Administrator",
  "module": "Ict Helpdesk",
  "name": "ICT Ticket",

@@ -32,21 +32,26 @@ def create_requester_user(
     user.gender = gender
     user.email = email
     user.enabled = 1
-    user.new_password = DEFAULT_PASSWORD
+    user.new_password = DEFAULT_PASSWORD # send welcome email
     user.send_welcome_email = 0
 
     # Assign "Requester" role before inserting
     user.append("roles", {"role": "Requester"})
 
-    # Optionally attach Role Profile (if exists)
-    if frappe.db.exists("Role Profile", "Requester"):
-        user.role_profile_name = "Requester"
+    # Assign role profile
+    # user.role_profile_name = "Requester"
+
+    # Assign module profile
+    user.module_profile = "Requester"
+
+    # Send welcome email
+    user.send_welcome_email = 1
 
     user.insert(ignore_permissions=True)
     frappe.db.commit()
 
     return {
         "status": "success",
-        "message": f"User {email} created successfully",
-        "user": user.name
+        # "message": f"User {email} created successfully",
+        # "user": user.name
     }
