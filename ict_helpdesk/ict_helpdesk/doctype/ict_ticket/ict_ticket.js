@@ -3,42 +3,42 @@
    
 frappe.ui.form.on("ICT Ticket", {
     // TODO: Complete this today
-    before_save(frm){
-        if(frm.doc.workflow_state === "Open"){
-            frm._auto_workflow_action = "Send for Approval"
-        }else if(frm.doc.workflow_state === "Awaiting Approval"){
-            frm._auto_workflow_action = "Approve"
-        }else if(frm.doc.workflow_state === "In Progress"){
-            frm._auto_workflow_action = "Resolve"
-        }else if(frm.doc.workflow_state === "On Hold"){
-            frm._auto_workflow_action = "Put On Hold"
-        }else if(frm.doc.workflow_state === "Delegated"){
-            frm._auto_workflow_action = "Delegate"
-        }else if(frm.doc.workflow_state === "Resolved"){
-            frm._auto_workflow_action = "Awaiting Review"
-        }else if(frm.doc.workflow_state === "Awaiting Review"){
-            frm._auto_workflow_action = "completed"
+    before_save(frm) {
+        // TODO: Make sure you complete this for the on-hold, delegate
+        if (frm.doc.workflow_state === "Open") {
+            frm._auto_workflow_action = "Send for Approval";
+        } else if (frm.doc.workflow_state === "Awaiting Approval") {
+            frm._auto_workflow_action = "Approve";
+        } else if (frm.doc.workflow_state === "In Progress") {
+            // You can choose the main next transition (Resolve/Put On Hold/Delegate)
+            // For simplicity, we’ll default to “Resolve” unless you want logic for others
+            frm._auto_workflow_action = "Resolve";
+        } else if (frm.doc.workflow_state === "On Hold") {
+            frm._auto_workflow_action = "Resolve";
+        } else if (frm.doc.workflow_state === "Delegated") {
+            frm._auto_workflow_action = "Resolve";
+        } else if (frm.doc.workflow_state === "Resolved") {
+            frm._auto_workflow_action = "Send for Review";
+        } else if (frm.doc.workflow_state === "Awaiting Review") {
+            frm._auto_workflow_action = "Complete";
         }
     },
-    after_save(frm) {
-        // Check if workflow action is set
-        if (frm._auto_workflow_action) {
-            frappe.show_alert({
-                message: __("Applying workflow transition…"),
-                indicator: "blue"
-            });
 
-            // Call Frappe's workflow API
+    after_save(frm) {
+        if (frm._auto_workflow_action) {
+            // frappe.show_alert({
+            //     message: __("Applying workflow transition…"),
+            //     indicator: "blue"
+            // });
+
             frappe.xcall("frappe.model.workflow.apply_workflow", {
                 doc: frm.doc,
                 action: frm._auto_workflow_action
             }).then(() => {
-                frappe.show_alert({
-                    message: __("Workflow '{0}' applied successfully", [frm._auto_workflow_action]),
-                    indicator: "green"
-                });
-
-                // Reload document to reflect changes
+                // frappe.show_alert({
+                //     message: __("Workflow '{0}' applied successfully", [frm._auto_workflow_action]),
+                //     indicator: "green"
+                // });
                 frm.reload_doc();
             }).catch(err => {
                 frappe.msgprint({
@@ -47,13 +47,19 @@ frappe.ui.form.on("ICT Ticket", {
                     indicator: "red"
                 });
             }).finally(() => {
-                // Clean up flag
                 delete frm._auto_workflow_action;
             });
         }
     },
+
     //=========================================================
     onload_post_render: function(frm) {
+        // Hide the entire Actions dropdown
+        $('.actions-btn-group').hide();
+
+        // Hide workflow-related buttons that may appear elsewhere
+        $('.workflow-button, .btn-workflow').hide();
+
         frm.events.apply_workflow_rules(frm);
         frm.events.serial_number(frm);
         frm.events.tag_number(frm);
@@ -95,10 +101,15 @@ frappe.ui.form.on("ICT Ticket", {
     //     }
     // },
     refresh: function(frm) {
-    // Code for auto save and implement workflow action
+        // ============================================
+        setTimeout(() => {
+            // Hide the entire Actions dropdown
+            $('.actions-btn-group').hide();
 
-
-// ================================================================================================= 
+            // Also hide workflow buttons that might appear elsewhere
+            $('.workflow-button, .btn-workflow').hide();
+        }, 500);
+        // ============================================
         frm.events.apply_workflow_rules(frm);
         frm.events.set_department_software_options(frm);
         frm.events.validate_workflow_transition(frm);
