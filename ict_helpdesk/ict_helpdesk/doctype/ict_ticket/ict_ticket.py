@@ -2,6 +2,7 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe.core.doctype import user
 from frappe.model.document import Document
 
 def get_permission_query_conditions(user):
@@ -44,10 +45,11 @@ def has_permission(doc, user):
  
 class ICTTicket(Document):
     def validate(self):
+
         if not (self.software_issue_check or self.hardware_issue_check or self.clearance_issue_check or self.internet_issue_check):
             frappe.throw("You must select at least one issue type: Software, Hardware, or Clearance.")
         # Workflow-specific checks
-        if self.workflow_state == "In Progress":
+        if self.workflow_state == "In Progress" and "Requester" not in frappe.get_roles(self.owner):
             if not self.issue_priority or not self.assigned_officer:
                 frappe.throw("Please set both Priority and Assigned Officer before moving to In Progress")
         elif self.workflow_state == "Resolved":

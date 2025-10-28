@@ -22,6 +22,8 @@
   "section_break_kvwa",
   "image_attachment",
   "recurring_issue_check",
+  "column_break_cotl",
+  "image_preview_id",
   "software_issue",
   "software_issue_check",
   "software_issue_type",
@@ -57,9 +59,9 @@
   "assigned_officer_email",
   "assigned_officer_mobile",
   "issue_delegation_check",
-  "delegate_to",
   "ict_staff_tab",
   "to_be_filled_out_by_assigned_officer_section",
+  "delegate_to",
   "resolve_issue_check",
   "report_attachment",
   "report",
@@ -152,7 +154,7 @@
    "default": "0",
    "fieldname": "recurring_issue_check",
    "fieldtype": "Check",
-   "label": "Check if it is a recurring issue"
+   "label": "Check this if it is a recurring issue"
   },
   {
    "depends_on": "eval:doc.department",
@@ -170,7 +172,7 @@
    "depends_on": "eval:doc.software_issue_check",
    "fieldname": "software_issue_description",
    "fieldtype": "Small Text",
-   "label": "Software Issue Description",
+   "label": "Write Down A Description of Your Software Issue",
    "mandatory_depends_on": "eval:doc.software_issue_check == 1"
   },
   {
@@ -277,7 +279,7 @@
    "depends_on": "eval:doc.hardware_issue_check",
    "fieldname": "hardware_issue_description",
    "fieldtype": "Text",
-   "label": "Issue Description",
+   "label": "Write Down A Description of Your Hardware Issue",
    "mandatory_depends_on": "eval:doc.hardware_issue_check"
   },
   {
@@ -437,7 +439,7 @@
    "depends_on": "eval:doc.internet_issue_check",
    "fieldname": "network_issue_description",
    "fieldtype": "Text",
-   "label": "Issue Description",
+   "label": "Write Down A Description of Your Internet Issue",
    "mandatory_depends_on": "eval:doc.internet_issue_check"
   },
   {
@@ -465,7 +467,7 @@
    "depends_on": "eval:doc.clearance_issue_check",
    "fieldname": "clearance_issue_description",
    "fieldtype": "Text",
-   "label": "Clearance Issue",
+   "label": "Write Down A Description of Your Clearance Issue",
    "mandatory_depends_on": "eval:doc.clearance_issue_check"
   },
   {
@@ -485,13 +487,22 @@
    "fieldname": "personal_device",
    "fieldtype": "Check",
    "label": "Personal Device"
+  },
+  {
+   "fieldname": "image_preview_id",
+   "fieldtype": "HTML",
+   "label": "Image Preview"
+  },
+  {
+   "fieldname": "column_break_cotl",
+   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-10-17 14:35:45.276314",
+ "modified": "2025-10-27 15:23:05.778220",
  "modified_by": "Administrator",
  "module": "Ict Helpdesk",
  "name": "ICT Ticket",

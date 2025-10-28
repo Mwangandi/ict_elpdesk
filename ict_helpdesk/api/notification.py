@@ -53,7 +53,7 @@ def send_notification(doc, method):
             message=requester_message
         )
 
-    elif doc.workflow_state == "In Progress":
+    elif doc.has_value_changed("workflow_state") and doc.workflow_state == "In Progress":
         # send sms to assigned_to
         # TODO: Ensure assigned_to_mobile is a field in the doctype
         message_to_assigned = f"ICT Ticket {doc.name} has been assigned to you.\n Please take the necessary actions to resolve it."
@@ -77,7 +77,7 @@ def send_notification(doc, method):
             message=requester_progress_msg
         )
 
-    elif doc.workflow_state == "Delegated":
+    elif doc.has_value_changed("workflow_state") and doc.workflow_state == "Delegated":
         intern_name = doc.delegated_to.intern_name
         intern_mobile = doc.delegated_to.intern_mobile
         intern_email = doc.delegated_to.intern_email
@@ -116,7 +116,7 @@ def send_notification(doc, method):
             message=director_delegate_msg
         )
 
-    elif doc.workflow_state == "On Hold":
+    elif doc.has_value_changed("workflow_state") and doc.workflow_state == "On Hold":
         # send sms to directors
         director_on_hold_msg = f"ICT Ticket {doc.name} assigned to officer {assigned_to} has been put On Hold awaiting further updates."
         sms(director_mobile, director_on_hold_msg)
@@ -141,7 +141,7 @@ def send_notification(doc, method):
             message=requester_on_hold_msg
         )
 
-    elif doc.workflow_state == "Resolved":
+    elif doc.has_value_changed("workflow_state") and doc.workflow_state == "Resolved":
         # send sms to requester
         requester_resolved_msg = f"Your ICT Ticket {doc.name} has been resolved."
         sms(requester_phone_number, requester_resolved_msg)
@@ -165,7 +165,7 @@ def send_notification(doc, method):
             subject=f"ICT Ticket {doc.name} Resolved",
             message=director_resolved_msg
         )
-    elif doc.workflow_state == "Completed":
+    elif doc.has_value_changed("workflow_state") and doc.workflow_state == "Completed":
         # send sms to requester
         requester_completed_msg = f"Your ICT Ticket {doc.name} has been completed. Thank you for your patience."
         sms(requester_phone_number, requester_completed_msg)
@@ -181,7 +181,6 @@ def send_notification(doc, method):
         
         # send sms to directors
         director_completed_msg = f"ICT Ticket {doc.name} assigned to officer {assigned_to} has been completed."
-        sms(director_mobile, director_completed_msg)
 
         # send email to directors
         frappe.sendmail(

@@ -2,8 +2,61 @@
 // For license information, please see license.txt
    
 frappe.ui.form.on("ICT Ticket", {
+    // TODO: Complete this today
+    before_save(frm){
+        if(frm.doc.workflow_state === "Open"){
+            frm._auto_workflow_action = "Send for Approval"
+        }else if(frm.doc.workflow_state === "Awaiting Approval"){
+            frm._auto_workflow_action = "Approve"
+        }else if(frm.doc.workflow_state === "In Progress"){
+            frm._auto_workflow_action = "Resolve"
+        }else if(frm.doc.workflow_state === "On Hold"){
+            frm._auto_workflow_action = "Put On Hold"
+        }else if(frm.doc.workflow_state === "Delegated"){
+            frm._auto_workflow_action = "Delegate"
+        }else if(frm.doc.workflow_state === "Resolved"){
+            frm._auto_workflow_action = "Awaiting Review"
+        }else if(frm.doc.workflow_state === "Awaiting Review"){
+            frm._auto_workflow_action = "completed"
+        }
+    },
+    after_save(frm) {
+        // Check if workflow action is set
+        if (frm._auto_workflow_action) {
+            frappe.show_alert({
+                message: __("Applying workflow transition…"),
+                indicator: "blue"
+            });
+
+            // Call Frappe's workflow API
+            frappe.xcall("frappe.model.workflow.apply_workflow", {
+                doc: frm.doc,
+                action: frm._auto_workflow_action
+            }).then(() => {
+                frappe.show_alert({
+                    message: __("Workflow '{0}' applied successfully", [frm._auto_workflow_action]),
+                    indicator: "green"
+                });
+
+                // Reload document to reflect changes
+                frm.reload_doc();
+            }).catch(err => {
+                frappe.msgprint({
+                    title: __("Workflow transition failed"),
+                    message: err.message || __("An error occurred while applying workflow."),
+                    indicator: "red"
+                });
+            }).finally(() => {
+                // Clean up flag
+                delete frm._auto_workflow_action;
+            });
+        }
+    },
+    //=========================================================
     onload_post_render: function(frm) {
         frm.events.apply_workflow_rules(frm);
+        frm.events.serial_number(frm);
+        frm.events.tag_number(frm);
         frm.events.validate_workflow_transition(frm);
         //====================
         if (frm.is_new()){
@@ -42,6 +95,10 @@ frappe.ui.form.on("ICT Ticket", {
     //     }
     // },
     refresh: function(frm) {
+    // Code for auto save and implement workflow action
+
+
+// ================================================================================================= 
         frm.events.apply_workflow_rules(frm);
         frm.events.set_department_software_options(frm);
         frm.events.validate_workflow_transition(frm);
@@ -49,6 +106,31 @@ frappe.ui.form.on("ICT Ticket", {
         setTimeout(() => {
             $(".form-message-container:contains('This form is not editable due to a Workflow.')").hide();
         }, 300);
+
+        // Image attachment
+        // Clear old preview
+        frm.fields_dict.image_preview_id.$wrapper.empty();
+
+        // Check if image is attached
+        if (frm.doc.image_attachment) {
+            let image_url = frm.doc.image_attachment.startsWith('/')
+                ? frm.doc.image_attachment
+                : '/' + frm.doc.image_attachment;
+
+            // Build preview
+            frm.fields_dict.image_preview_id.$wrapper.html(`
+                <div style="margin-top: 8px;">
+                    <a href="${image_url}" target="_blank">
+                        <img src="${image_url}" 
+                             style="max-width: 250px; border: 1px solid #ddd; border-radius: 6px; padding: 3px;">
+                    </a>
+                </div>
+            `);
+        } else {
+            frm.fields_dict.image_preview_id.$wrapper.html(
+                `<span style="color: gray;">No image attached</span>`
+            );
+        }
 
         if (!frm.is_new()) {
             // Make sure fields remain read-only after save
@@ -186,7 +268,7 @@ frappe.ui.form.on("ICT Ticket", {
             });
         }
 
-        frm.refresh_fields();
+        // frm.refresh_fields();
     },
 
     // DEPARTMENT AUTO POPULATE
@@ -333,14 +415,16 @@ frappe.ui.form.on("ICT Ticket", {
                     if(r.message[fieldname]){
                         frm.set_value(fieldname, r.message[fieldname]);
                         frm.set_df_property(fieldname, "hidden", 0);
+                        frm.set_df_property(fieldname, "read", 1);
                         frm.refresh_field(fieldname);
                     }
                 });
                 if(r.message.device_name == "All in One" || r.message.device_name == "Laptop" || r.message.device_name == "System Unit"){
                     specific_fields.forEach(function(fieldname){
                         if(r.message[fieldname]){
-                            frm.set_value(fieldname, r.message[f]);
+                            frm.set_value(fieldname, r.message[fieldname]);
                             frm.set_df_property(fieldname, "hidden", 0);
+                            frm.set_df_property(fieldname, "read", 1);
                             frm.refresh_field(fieldname);
                         }
                     });
