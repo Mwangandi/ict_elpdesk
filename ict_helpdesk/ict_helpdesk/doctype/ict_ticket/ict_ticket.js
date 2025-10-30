@@ -1,5 +1,21 @@
 // Copyright (c) 2025, Pantech Solutions and contributors
 // For license information, please see license.txt
+
+function rename_and_hide_buttons() {
+    setTimeout(() => {
+        // Rename the Save button to Submit
+        const save_btn = $('.primary-action');
+        if (save_btn.length) {
+            save_btn.text('Submit');
+            save_btn.attr('data-label', 'Submit');
+        }
+
+        // Hide workflow buttons and dropdowns
+        $('.actions-btn-group').hide();
+        $('.workflow-button, .btn-workflow').hide();
+        $('.menu-btn-group').hide(); // Optional: hide 3-dot menu
+    }, 500);
+}
    
 frappe.ui.form.on("ICT Ticket", {
     // TODO: Complete this today
@@ -56,6 +72,13 @@ frappe.ui.form.on("ICT Ticket", {
     onload_post_render: function(frm) {
         // Hide the entire Actions dropdown
         $('.actions-btn-group').hide();
+        rename_and_hide_buttons();
+
+        let save_btn = $('.primary-action');
+        if (save_btn.length) {
+            save_btn.text('Submit');
+            save_btn.attr('data-label', 'Submit');
+        }
 
         // Hide workflow-related buttons that may appear elsewhere
         $('.workflow-button, .btn-workflow').hide();
@@ -101,13 +124,21 @@ frappe.ui.form.on("ICT Ticket", {
     //     }
     // },
     refresh: function(frm) {
+        // RENAME SAVE BUTTON TO SUBMIT
+        rename_and_hide_buttons();
+
+        // let save_btn = $('.primary-action');
+        // if (save_btn.length) {
+        //     save_btn.text('Submit');
+        //     save_btn.attr('data-label', 'Submit');
+        // }
         // ============================================
         setTimeout(() => {
             // Hide the entire Actions dropdown
-            $('.actions-btn-group').hide();
+            $('.actions-btn-group, .workflow-button, .btn-workflow').hide();
 
-            // Also hide workflow buttons that might appear elsewhere
-            $('.workflow-button, .btn-workflow').hide();
+            // // Also hide workflow buttons that might appear elsewhere
+            // $('.workflow-button, .btn-workflow').hide();
         }, 500);
         // ============================================
         frm.events.apply_workflow_rules(frm);
@@ -292,8 +323,8 @@ frappe.ui.form.on("ICT Ticket", {
             });
         }
         // TODO: Add more fields
-        const finance_issues = ["IFMIS", "IB", "Windows"];
-        const hr_issues = ["Windows", "Excel", "Office"];
+        const finance_issues = ["IFMIS", "IB", "Windows","Antivirus"];
+        const hr_issues = ["Windows", "Excel", "Office","Antivirus"];
         const health_issues = ["SHA Portal", "Windows", "Office"];
         const revenue_issues = ["iTax", "Windows", "Office"];
 
@@ -308,7 +339,7 @@ frappe.ui.form.on("ICT Ticket", {
         }
         else {
             // fallback options so it's never empty
-            frm.set_df_property("software_issue_type", "options", ["Select an Option", "Windows", "Office"].join("\n"));
+            frm.set_df_property("software_issue_type", "options", ["Windows", "Office"].join("\n"));
         }
 
         frm.refresh_field("software_issue_type");
