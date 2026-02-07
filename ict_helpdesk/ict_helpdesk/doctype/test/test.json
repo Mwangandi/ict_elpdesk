@@ -7,12 +7,12 @@
  "engine": "InnoDB",
  "field_order": [
   "section_break_oumg",
-  "amended_from",
   "route",
   "title",
-  "category",
   "published",
-  "author"
+  "author",
+  "html_id",
+  "range_id"
  ],
  "fields": [
   {
@@ -20,29 +20,14 @@
    "fieldtype": "Section Break"
   },
   {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Test",
-   "print_hide": 1,
-   "read_only": 1,
-   "search_index": 1
-  },
-  {
    "fieldname": "route",
-   "fieldtype": "Data",
+   "fieldtype": "HTML",
    "label": "Route"
   },
   {
    "fieldname": "title",
    "fieldtype": "Data",
    "label": "Title"
-  },
-  {
-   "fieldname": "category",
-   "fieldtype": "Select",
-   "label": "Category"
   },
   {
    "default": "0",
@@ -55,6 +40,17 @@
    "fieldtype": "Link",
    "label": "Author",
    "options": "User"
+  },
+  {
+   "fieldname": "html_id",
+   "fieldtype": "HTML",
+   "label": "HTML",
+   "options": "<h3>Leave Request</h3>\n\n<div class=\"calendar-container\">\n    <label>Select Leave Dates (weekends not counted):</label>\n    <input type=\"text\" id=\"leaveDates\">\n</div>\n\n<div class=\"results\" id=\"results\" style=\"display:none;\">\n    <h3>Leave Details</h3>\n    <p><strong>Selected Range:</strong> <span id=\"selectedRange\"></span></p>\n    <p><strong>Total Days:</strong> <span id=\"totalDaysCount\"></span></p>\n    <p><strong>Working Days:</strong> <span id=\"leaveDaysCount\"></span></p>\n    <p><strong>Weekend Days:</strong> <span id=\"weekendDaysCount\"></span></p>\n    <div class=\"date-list\" id=\"dateList\"></div>\n</div>\n"
+  },
+  {
+   "fieldname": "range_id",
+   "fieldtype": "Data",
+   "label": "Range"
   }
  ],
  "grid_page_length": 50,
@@ -62,7 +58,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-10-22 04:35:01.713878",
+ "modified": "2025-11-28 18:51:10.317726",
  "modified_by": "Administrator",
  "module": "Ict Helpdesk",
  "name": "Test",

@@ -1,0 +1,84 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"LX9l39R9j2\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">ICT Officers Tools</span>\",\"col\":12}},{\"id\":\"4fupopkVv9\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"ICT Officers\",\"col\":3}},{\"id\":\"dzSTswWkbi\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Add New Officer\",\"col\":3}},{\"id\":\"kn9L_yRNu6\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Staff Details Tools</b></span>\",\"col\":12}},{\"id\":\"BFBlrKb65m\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Staff Details\",\"col\":3}},{\"id\":\"J5WDWrfMhY\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Add New Staff\",\"col\":3}},{\"id\":\"lu0xXGhy46\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Asset Data Tools</b></span>\",\"col\":12}},{\"id\":\"5sGVjWCsuh\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Asset Data\",\"col\":3}},{\"id\":\"bik4ys6mOO\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Add New Asset\",\"col\":3}},{\"id\":\"YPFLNWLOQZ\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Dashboards</b></span>\",\"col\":12}},{\"id\":\"Spg26oGQWI\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Daily Ticket Count\",\"col\":4}}]",
+ "creation": "2025-10-30 12:32:28.271191",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "chart",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Director Dashboard",
+ "links": [],
+ "modified": "2025-11-05 17:48:39.408623",
+ "modified_by": "Administrator",
+ "module": "Ict Helpdesk",
+ "name": "Director Dashboard",
+ "number_cards": [
+  {
+   "label": "Daily Ticket Count",
+   "number_card_name": "Daily Ticket Count"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "Admin 2"
+  }
+ ],
+ "sequence_id": 2.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "ICT Officers",
+   "link_to": "ICT Staff",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Staff Details",
+   "link_to": "Staff Details",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Asset Data",
+   "link_to": "Asset Data",
+   "stats_filter": "[]",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Add New Asset",
+   "type": "URL",
+   "url": "/app/asset-data/new-asset-data"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Add New Officer",
+   "type": "URL",
+   "url": "/app/ict-staff/new-ict-staff"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Add New Staff",
+   "type": "URL",
+   "url": "/app/staff-details/new-staff-details"
+  }
+ ],
+ "title": "Director Dashboard"
+}

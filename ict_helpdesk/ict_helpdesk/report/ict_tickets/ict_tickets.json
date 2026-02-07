@@ -1,0 +1,51 @@
+{
+ "add_total_row": 1,
+ "add_translate_data": 0,
+ "columns": [],
+ "creation": "2025-11-05 17:39:36.767987",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "json": "{}",
+ "letterhead": null,
+ "modified": "2025-11-05 17:53:03.002457",
+ "modified_by": "Administrator",
+ "module": "Ict Helpdesk",
+ "name": "ICT Tickets",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "ICT Ticket",
+ "reference_report": "ICT Tickets Report",
+ "report_name": "ICT Tickets",
+ "report_type": "Custom Report",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Requester"
+  },
+  {
+   "role": "ICT Director"
+  },
+  {
+   "role": "Chief ICT Officer"
+  },
+  {
+   "role": "Senior ICT Officer"
+  },
+  {
+   "role": "ICT Officer (I, II, III)"
+  },
+  {
+   "role": "Voluntter/Intern/Atachee"
+  },
+  {
+   "role": "Admin 2"
+  }
+ ],
+ "timeout": 0
+}

@@ -52,6 +52,8 @@
   "clearance_issue_section",
   "clearance_issue_check",
   "clearance_issue_description",
+  "section_break_mlfv",
+  "rating",
   "senior_ict_staff_tab",
   "senior_ict_officer",
   "issue_priority",
@@ -496,13 +498,23 @@
   {
    "fieldname": "column_break_cotl",
    "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_mlfv",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "rating",
+   "fieldtype": "Rating",
+   "label": "Rating",
+   "permlevel": 5
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-10-27 15:23:05.778220",
+ "modified": "2025-10-30 14:16:23.201389",
  "modified_by": "Administrator",
  "module": "Ict Helpdesk",
  "name": "ICT Ticket",

@@ -274,4 +274,10 @@ website_route_redirects = [
 
 # login_redirect = "ict_helpdesk.api.redirect.custom_login_redirect"
 
+on_login = "ict_helpdesk.api.redirect.login_redirect"
+on_session_creation = "ict_helpdesk.api.redirect.login_redirect"
+
+route_rules = [
+    {"from_route": "/app/ict-helpdesk", "to_route": "/tickets"}
+]
 
