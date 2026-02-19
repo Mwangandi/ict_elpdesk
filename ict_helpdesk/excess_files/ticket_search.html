@@ -1,0 +1,221 @@
+<section class="ticket-search-section d-flex align-items-center justify-content-center" 
+  style="min-height:100vh; background:#f1f5f9;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+
+        <!-- Header -->
+        <div class="text-center mb-4">
+          <div style="width:56px; height:56px; background:#dbeafe; border-radius:16px; display:flex; align-items:center; justify-content:center; margin:0 auto 16px;">
+            <i class="fa-solid fa-ticket" style="color:#1d4ed8; font-size:24px;"></i>
+          </div>
+          <h4 style="font-weight:700; color:#0f172a; margin-bottom:6px;">Ticket Lookup</h4>
+          <p style="color:#64748b; font-size:14px; margin:0;">Enter your ticket number to check its status</p>
+        </div>
+
+        <!-- Card -->
+        <div style="background:#fff; border-radius:16px; padding:32px; box-shadow:0 4px 24px rgba(0,0,0,0.08); border:1px solid #e2e8f0;">
+
+          <form id="ticket-search-form" novalidate>
+            <div style="margin-bottom:20px;">
+              <label for="ticket-input" style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:#64748b; display:block; margin-bottom:8px;">
+                Ticket Number
+              </label>
+              <div style="position:relative;">
+                <i class="fa-solid fa-hashtag" style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:#94a3b8; font-size:14px;"></i>
+                <input
+                  type="text"
+                  id="ticket-input"
+                  placeholder="e.g. TKT-25-10-06-0001"
+                  style="
+                    width:100%;
+                    padding:12px 14px 12px 38px;
+                    border:1.5px solid #e2e8f0;
+                    border-radius:10px;
+                    font-size:14px;
+                    color:#0f172a;
+                    outline:none;
+                    transition:border-color 0.2s;
+                    font-family:var(--mono, monospace);
+                    letter-spacing:0.5px;
+                  "
+                  onfocus="this.style.borderColor='#0b69ff'"
+                  onblur="this.style.borderColor='#e2e8f0'"
+                />
+              </div>
+              <div id="ticket-input-error" style="display:none; color:#dc2626; font-size:12px; margin-top:6px;">
+                <i class="fa-solid fa-circle-exclamation"></i> Please enter a valid ticket number.
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              style="
+                width:100%;
+                padding:13px;
+                background:#0b69ff;
+                color:#fff;
+                border:none;
+                border-radius:10px;
+                font-size:14px;
+                font-weight:600;
+                cursor:pointer;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                gap:8px;
+                transition:background 0.2s;
+              "
+              onmouseover="this.style.background='#0952cc'"
+              onmouseout="this.style.background='#0b69ff'"
+            >
+              <i class="fa-solid fa-magnifying-glass"></i>
+              Search Ticket
+            </button>
+          </form>
+
+          <!-- Divider -->
+          <div style="display:flex; align-items:center; gap:12px; margin:24px 0;">
+            <div style="flex:1; height:1px; background:#e2e8f0;"></div>
+            <span style="font-size:12px; color:#94a3b8;">or</span>
+            <div style="flex:1; height:1px; background:#e2e8f0;"></div>
+          </div>
+
+          <!-- Result area -->
+          <div id="ticket-search-result" style="display:none;">
+            <div style="background:#f8fafc; border-radius:10px; padding:20px; border:1px solid #e2e8f0;">
+              <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:#94a3b8; margin-bottom:12px;">Ticket Details</div>
+              <div style="display:grid; gap:10px;" id="ticket-result-fields"></div>
+            </div>
+          </div>
+
+          <div id="ticket-not-found" style="display:none; text-align:center; padding:16px 0;">
+            <i class="fa-solid fa-circle-xmark" style="color:#dc2626; font-size:28px; margin-bottom:8px;"></i>
+            <p style="color:#dc2626; font-size:14px; font-weight:600; margin:0;">Ticket not found</p>
+            <p style="color:#94a3b8; font-size:12px; margin:4px 0 0;">Double-check your ticket number and try again.</p>
+          </div>
+
+        </div>
+
+        <!-- Footer note -->
+        <p style="text-align:center; font-size:12px; color:#94a3b8; margin-top:20px;">
+          <i class="fa-solid fa-lock" style="margin-right:4px;"></i>
+          Your ticket data is private and secure
+        </p>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+frappe.ready(function () {
+
+  const form      = document.getElementById('ticket-search-form');
+  const input     = document.getElementById('ticket-input');
+  const errorEl   = document.getElementById('ticket-input-error');
+  const resultEl  = document.getElementById('ticket-search-result');
+  const notFound  = document.getElementById('ticket-not-found');
+  const fieldsEl  = document.getElementById('ticket-result-fields');
+
+  if (!form) return;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Reset state
+    if (errorEl)  errorEl.style.display  = 'none';
+    if (resultEl) resultEl.style.display = 'none';
+    if (notFound) notFound.style.display = 'none';
+    if (input)    input.style.borderColor = '#e2e8f0';
+
+    const ticketNo  = (input?.value || '').trim();
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    if (!ticketNo) {
+      if (errorEl) errorEl.style.display = 'block';
+      if (input)   input.style.borderColor = '#dc2626';
+      return;
+    }
+
+    // Loading state
+    if (submitBtn) {
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Searching...';
+      submitBtn.disabled  = true;
+    }
+
+    frappe.call({
+      method: 'ict_helpdesk.api.get_ticket.check_ticket_exists',
+      args: { ticket_no: ticketNo },
+      callback(r) {
+        if (submitBtn) {
+          submitBtn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> Search Ticket';
+          submitBtn.disabled  = false;
+        }
+
+        if (!r.message) {
+          if (notFound) notFound.style.display = 'block';
+          return;
+        }
+
+        // Ticket found — fetch full details
+        frappe.call({
+          method: 'frappe.client.get',
+          args: { doctype: 'ICT Ticket', name: ticketNo },
+          callback(r2) {
+            const t = r2.message;
+            if (!t) {
+              if (notFound) notFound.style.display = 'block';
+              return;
+            }
+
+            const statusColors = {
+              'Open':              { bg: '#dbeafe', color: '#1d4ed8' },
+              'In Progress':       { bg: '#fef9c3', color: '#92400e' },
+              'On Hold':           { bg: '#f3f4f6', color: '#374151' },
+              'Resolved':          { bg: '#dcfce7', color: '#15803d' },
+              'Completed':         { bg: '#dcfce7', color: '#15803d' },
+              'Awaiting Approval': { bg: '#ede9fe', color: '#6d28d9' },
+              'Delegated':         { bg: '#fce7f3', color: '#9d174d' },
+              'Awaiting Review':   { bg: '#fff7ed', color: '#c2410c' },
+            };
+            const sc = statusColors[t.status] || { bg: '#f1f5f9', color: '#475569' };
+
+            const field = (label, value) => `
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #f1f5f9;">
+                <span style="font-size:12px; color:#94a3b8; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">${label}</span>
+                <span style="font-size:13px; color:#1e293b; font-weight:500; text-align:right; max-width:60%;">${value || '—'}</span>
+              </div>`;
+
+            if (fieldsEl) {
+              fieldsEl.innerHTML = `
+                ${field('Ticket No.',       `<span style="font-family:monospace; font-weight:700;">${t.name}</span>`)}
+                ${field('Status',           `<span style="background:${sc.bg}; color:${sc.color}; padding:3px 10px; border-radius:20px; font-size:12px; font-weight:700;">${t.status}</span>`)}
+                ${field('Summary',          t.issue_summary)}
+                ${field('Priority',         t.issue_priority)}
+                ${field('Department',       t.department)}
+                ${field('Assigned Officer', t.assigned_officer || 'Unassigned')}
+                ${field('Date Submitted',   t.creation ? new Date(t.creation).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }) : '—')}
+              `;
+            }
+
+            if (resultEl) resultEl.style.display = 'block';
+          },
+          error() {
+            if (notFound) notFound.style.display = 'block';
+          }
+        });
+      },
+      error() {
+        if (submitBtn) {
+          submitBtn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> Search Ticket';
+          submitBtn.disabled  = false;
+        }
+        if (notFound) notFound.style.display = 'block';
+      }
+    });
+  });
+
+});
+
+

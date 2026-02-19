@@ -1,0 +1,104 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:recepient_id",
+ "creation": "2026-02-19 10:26:07.563245",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "recepient_id",
+  "sender_id",
+  "sender_label",
+  "folder",
+  "column_break_exad",
+  "is_read",
+  "is_deleted",
+  "section_body",
+  "body_html",
+  "body_text"
+ ],
+ "fields": [
+  {
+   "fieldname": "recepient_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Recepient",
+   "options": "User",
+   "unique": 1
+  },
+  {
+   "fieldname": "sender_id",
+   "fieldtype": "Data",
+   "label": "Sender (Email/ User ID)"
+  },
+  {
+   "fieldname": "sender_label",
+   "fieldtype": "Data",
+   "label": "Sender display Name"
+  },
+  {
+   "fieldname": "folder",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Folder"
+  },
+  {
+   "fieldname": "column_break_exad",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_read",
+   "fieldtype": "Check",
+   "label": "Read"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_deleted",
+   "fieldtype": "Check",
+   "label": "Deleted"
+  },
+  {
+   "fieldname": "section_body",
+   "fieldtype": "Section Break",
+   "label": "Message Body"
+  },
+  {
+   "fieldname": "body_html",
+   "fieldtype": "Text Editor",
+   "label": "Body (HTML)"
+  },
+  {
+   "fieldname": "body_text",
+   "fieldtype": "Long Text",
+   "label": "Body (Plain Text)"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-02-19 11:07:32.504551",
+ "modified_by": "Administrator",
+ "module": "Ict Helpdesk",
+ "name": "ICT Message",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

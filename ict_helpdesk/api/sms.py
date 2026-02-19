@@ -1,14 +1,15 @@
 import os
-from dotenv import load_dotenv
 import requests
-import frappe
 
-load_dotenv()
+# sms_gateway_url = "https://api.tililtech.com/sms/v3/sendsms"
+# sms_apikey = "YbdIXnAUWVPu7Ks8QHtopkfRwlEicv3y6z0F9qx5Gj2LmOC4DTJSarN1eZBhMg"
+# sms_partner_id = 6213
+# sms_shortcode = "T-TAVETAGOV"
 
-sms_gateway_url = os.getenv("SMS_GATEWAY_URL")
-sms_apikey = os.getenv("SMS_APIKEY")
-sms_partner_id = os.getenv("SMS_PARTNER_ID")
-sms_shortcode = os.getenv("SMS_SHORTCODE")
+sms_gateway_url = "https://sms.textsms.co.ke/api/services/sendsms/?"
+sms_apikey = "c710c75e3bd7ce9dc2020c207350785e"
+sms_partner_id = "14137"
+sms_shortcode = "TextSMS"
 
 # Validate environment variables
 for var_name, var_value in [
@@ -28,10 +29,6 @@ def send_custom_sms(number, message):
         "message": message
     }
     response = requests.post(sms_gateway_url, data=payload)
-    frappe.log_error(
-        message=f"Full SMS Response: {response.text}",
-        title=f"SMS to {number}"[:140]
-    )
 
-# if __name__ == "__main__":
-#     send_custom_sms(["0795752053"], "Hello")
+if __name__ == "__main__":
+    send_custom_sms(["0795752053"], "Hello")

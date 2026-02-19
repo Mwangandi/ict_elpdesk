@@ -257,9 +257,11 @@ doc_events = {
         "on_update": "ict_helpdesk.api.notification.send_notification"
     },
     "User": {
-        "after_insert": "ict_helpdesk.api.user_hooks.set_default_user_settings"
+        "before_insert": ["ict_helpdesk.api.user_signup.assign_module_profile",
+                        "ict_helpdesk.api.user_signup.assign_role_profile"]
     }
 }
+
 
 # ict_helpdesk/hooks.py
 # boot_session = "ict_helpdesk.api.session.custom_boot_session"
@@ -277,7 +279,14 @@ website_route_redirects = [
 on_login = "ict_helpdesk.api.redirect.login_redirect"
 on_session_creation = "ict_helpdesk.api.redirect.login_redirect"
 
+
 route_rules = [
     {"from_route": "/app/ict-helpdesk", "to_route": "/tickets"}
 ]
 
+
+route_rules = [
+    {"from_route": "/app/ict-helpdesk", "to_route": "/tickets"}
+]
+
+ 

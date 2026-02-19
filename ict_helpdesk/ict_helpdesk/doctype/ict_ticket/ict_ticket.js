@@ -18,7 +18,6 @@ function rename_and_hide_buttons() {
 }
    
 frappe.ui.form.on("ICT Ticket", {
-    // TODO: Complete this today
     before_save(frm) {
         // TODO: Make sure you complete this for the on-hold, delegate
         if (frm.doc.workflow_state === "Open") {
@@ -26,8 +25,6 @@ frappe.ui.form.on("ICT Ticket", {
         } else if (frm.doc.workflow_state === "Awaiting Approval") {
             frm._auto_workflow_action = "Approve";
         } else if (frm.doc.workflow_state === "In Progress") {
-            // You can choose the main next transition (Resolve/Put On Hold/Delegate)
-            // For simplicity, we’ll default to “Resolve” unless you want logic for others
             frm._auto_workflow_action = "Resolve";
         } else if (frm.doc.workflow_state === "On Hold") {
             frm._auto_workflow_action = "Resolve";
@@ -42,19 +39,10 @@ frappe.ui.form.on("ICT Ticket", {
 
     after_save(frm) {
         if (frm._auto_workflow_action) {
-            // frappe.show_alert({
-            //     message: __("Applying workflow transition…"),
-            //     indicator: "blue"
-            // });
-
             frappe.xcall("frappe.model.workflow.apply_workflow", {
                 doc: frm.doc,
                 action: frm._auto_workflow_action
             }).then(() => {
-                // frappe.show_alert({
-                //     message: __("Workflow '{0}' applied successfully", [frm._auto_workflow_action]),
-                //     indicator: "green"
-                // });
                 frm.reload_doc();
             }).catch(err => {
                 frappe.msgprint({
@@ -70,7 +58,15 @@ frappe.ui.form.on("ICT Ticket", {
 
     //=========================================================
     onload_post_render: function(frm) {
-        // Hide the entire Actions dropdown
+
+        // Check if grecaptcha is available
+        console.log('grecaptcha available:', typeof grecaptcha !== 'undefined');
+        
+        if (typeof grecaptcha === 'undefined') {
+            console.error('reCAPTCHA library not loaded!');
+        }
+
+        // Hide Actions dropdown
         $('.actions-btn-group').hide();
         rename_and_hide_buttons();
 
@@ -80,7 +76,7 @@ frappe.ui.form.on("ICT Ticket", {
             save_btn.attr('data-label', 'Submit');
         }
 
-        // Hide workflow-related buttons that may appear elsewhere
+        // Hide workflow buttons
         $('.workflow-button, .btn-workflow').hide();
 
         frm.events.apply_workflow_rules(frm);
@@ -89,7 +85,6 @@ frappe.ui.form.on("ICT Ticket", {
         frm.events.validate_workflow_transition(frm);
         //====================
         if (frm.is_new()){
-            console.log("New ticket detected, fetching user data...");
             frappe.call({
             method: "ict_helpdesk.api.get_user_data.ticket_personal_number",
             // args: {personal_number: frm.doc.personal_number},
@@ -113,8 +108,9 @@ frappe.ui.form.on("ICT Ticket", {
             });
         }
         // reacptcha script
+        // Always change this code when changin the site key
         if (!window.grecaptcha) {
-            $.getScript('https://www.google.com/recaptcha/api.js?render=6Ld4PeErAAAAALE3KDQlh2aMtYpGuKEOwiQVW9EN');
+            $.getScript('https://www.google.com/recaptcha/api.js?render=6LcVAm4sAAAAANQ6bh6pGBGqdaiaZ0OQqEb-9Y6B');
         }
     },
     // after_save(frm) {
@@ -134,11 +130,7 @@ frappe.ui.form.on("ICT Ticket", {
         // }
         // ============================================
         setTimeout(() => {
-            // Hide the entire Actions dropdown
             $('.actions-btn-group, .workflow-button, .btn-workflow').hide();
-
-            // // Also hide workflow buttons that might appear elsewhere
-            // $('.workflow-button, .btn-workflow').hide();
         }, 500);
         // ============================================
         frm.events.apply_workflow_rules(frm);
@@ -149,8 +141,6 @@ frappe.ui.form.on("ICT Ticket", {
             $(".form-message-container:contains('This form is not editable due to a Workflow.')").hide();
         }, 300);
 
-        // Image attachment
-        // Clear old preview
         frm.fields_dict.image_preview_id.$wrapper.empty();
 
         // Check if image is attached
@@ -550,9 +540,11 @@ frappe.ui.form.on("ICT Ticket", {
         });
     },
     validate: function(frm) {
+        
         // Prevent infinite loop: skip if already verified
         if (frm.recaptcha_verified) {
             frappe.validated = true;
+
 
             // Now check your other conditions
             if (
@@ -571,18 +563,15 @@ frappe.ui.form.on("ICT Ticket", {
         frappe.validated = false;
 
         grecaptcha.ready(function() {
-            grecaptcha.execute('6Ld4PeErAAAAALE3KDQlh2aMtYpGuKEOwiQVW9EN', { action: 'submit_ticket' })
+            grecaptcha.execute('6LcVAm4sAAAAANQ6bh6pGBGqdaiaZ0OQqEb-9Y6B', { action: 'submit_ticket' })
                 .then(function(token) {
                     frappe.call({
                         method: "ict_helpdesk.api.recaptcha.verify_recaptcha",
                         args: { token: token },
                         callback: function(r) {
                             if (r.message === true) {
-                                // Mark verified to prevent re-loop
                                 frm.recaptcha_verified = true;
                                 frappe.validated = true;
-
-                                // Save again silently
                                 frm.save();
                             } else {
                                 frappe.msgprint(__('reCAPTCHA verification failed. Please try again.'));

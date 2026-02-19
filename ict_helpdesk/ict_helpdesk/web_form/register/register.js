@@ -49,7 +49,7 @@ frappe.ready(function() {
         }
     });
 })
-
+ 
 // frappe.web_form.after_load = () => {
 //     const personalField = frappe.web_form.get_field("personal_number");
 
